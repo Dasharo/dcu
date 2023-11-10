@@ -1,12 +1,12 @@
-# dcu - Dasharo Configuration Utility
+# DCU - Dasharo Configuration Utility
 
 ## Introduction
 
-The Dasharo Configuration Utility is a script designed to facilitate tasks such
-as customizing the boot logo and setting unique UUIDs or Serial Numbers for
-SMBIOS. This readme provides only the most basic information. For details
-please refer to [our guide](https://docs.dasharo.com/guides/image-customization/)
-.
+The Dasharo Configuration Utility is a tool designed to configure Dasharo firmware
+binary images. It includes task such as customizing the boot logo, and setting
+unique UUIDs or Serial Numbers in SMBIOS tables. This README provides only the
+most basic information. For details please refer to
+[documentation](https://docs.dasharo.com/guides/image-customization/).
 
 ## Prerequisites
 
