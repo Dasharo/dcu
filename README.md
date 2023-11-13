@@ -36,3 +36,17 @@ Usage: dcu OPTIONS coreboot.rom
       Above command will obtain the current SMBIOS UUID and Serial Number
       from the system and patch the coreboot binary.
 ```
+
+## Development
+
+Please note that after every code modification in `src` you have to run `bashly
+generate`. Typical developer workflow would looks as follows:
+
+1. Set alias for bashly:
+  ```bash
+  alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
+  ```
+2. Perform code modification in `src` directory.
+3. Apply changes by `bashly generate`
+4. Test your changes.
+5. If your changes work as expected create pull request.
