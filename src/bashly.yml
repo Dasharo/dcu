@@ -23,6 +23,10 @@ commands:
         short: -s
         arg: serial
         help: Serial number to be set in SMBIOS type 1 and type 2 structure
+    examples:
+      - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4
+      - dcu smbios coreboot.rom -s D07229051
+      - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - name: logo
     alias: l
     help: Insert custom logo boot splash into firmware image
@@ -35,6 +39,8 @@ commands:
         short: -l
         arg: logo
         help: Custom logo in BMP/PNG/JPG/SVG format to be displayed on boot
+    examples:
+      - dcu logo coreboot.rom -l bootsplash.bmp
 examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp

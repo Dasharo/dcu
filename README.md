@@ -39,14 +39,21 @@ TOOLLDFLAGS=-static sudo make -C util/cbfstool install
 
 ## Usage
 
+`dcu` can be used as a standalone script, and is also available in the
+[Dasharo Tools Suite](https://docs.dasharo.com/dasharo-tools-suite/overview/).
+
+To use `dcu` as a standalone script (or using a container), you should clone
+the rpository first:
+
+```shell
+git clone https://github.com/Dasharo/dcu.git
+```
+
 ### Dasharo Configuration Container
 
 Simply use `dcuc` instead od `dcu`, and follow the section below.
 
 ### Standalone
-
-`dcu` can be used as a standalone script, and is also available in the
-[Dasharo Tools Suite](https://docs.dasharo.com/dasharo-tools-suite/overview/).
 
 The script will save the UUID and Serial Number to the COREBOOT region and the
 logo to BOOTSPLASH region.
@@ -62,43 +69,12 @@ data will be kept (as long as UEFI variables are not erased).
 Simply run the script with `-h` or `--help` flags to get documentation and examples
 of the available commands.
 
-```txt
-dcu - Dasharo Configuration Utility
+Common actions:
 
-Usage:
-  dcu COMMAND
-  dcu [COMMAND] --help | -h
-  dcu --version | -v
+* Change boot logo:
 
-Commands:
-  smbios   Edit SMBIOS data in a firmware image
-  logo     Insert custom logo boot splash into firmware image
-
-Options:
-  --help, -h
-    Show this help
-
-  --version, -v
-    Show version number
-
-Examples:
-  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
-  dcu logo coreboot.rom -l bootsplash.bmp
-Usage: dcu OPTIONS coreboot.rom
-
-  coreboot.rom  - Dasharo coreboot file to modify
-
-  OPTIONS:
-    -u | --uuid <UUID>              - UUID in RFC4122 format to be set in SMBIOS type 1 structure
-    -s | --serial-number <SERIAL>   - Serial number to be set in SMBIOS type 1 and type 2 structure
-    -l | --logo <LOGO>              - Custom logo in BMP/PNG/JPG/SVG format to be displayed on boot
-
-  Examples:
-    ./dcu -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051 -l ~/logo.svg coreboot.rom
-
-    ./dcu -u `dmidecode -s system-uuid` -s `dmidecode -s baseboard-serial-number` coreboot.rom
-      Above command will obtain the current SMBIOS UUID and Serial Number
-      from the system and patch the coreboot binary.
+```bash
+./dcu logo coreboot.rom -l bootsplash.bmp
 ```
 
 ## Error codes

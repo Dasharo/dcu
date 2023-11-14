@@ -107,6 +107,13 @@ dcu_smbios_usage() {
     printf "    Dasharo firmware file (e.g. coreboot.rom)\n"
     echo
 
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4\n"
+    printf "  dcu smbios coreboot.rom -s D07229051\n"
+    printf "  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051\n"
+    echo
+
   fi
 }
 
@@ -151,6 +158,11 @@ dcu_logo_usage() {
     # :argument.usage
     printf "  %s\n" "DASHARO_ROM_FILE"
     printf "    Dasharo firmware file (e.g. coreboot.rom)\n"
+    echo
+
+    # :command.usage_examples
+    printf "%s\n" "Examples:"
+    printf "  dcu logo coreboot.rom -l bootsplash.bmp\n"
     echo
 
   fi
