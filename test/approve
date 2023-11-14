@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Run this from the root directory
+
+cd ./test || exit
+source approvals.bash
+
+# Update me
+cli=../dcu
+
+describe "help message"
+  approve "$cli --help"
+
+describe "Try to replace logo in binary supporting that"
+  approve "$cli logo ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ./data/bootsplash.bmp"
+
+describe "Try to replace logo in binary NOT supporting that"
+  approve "$cli logo ./data/protectli_vault_kbl_v1.0.14.rom -l ./data/bootsplash.bmp"
+
+describe "Try to replace serial in binary supporting that"
+  approve "$cli smbios .//data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051"
+
+describe "Try to replace serial in binary NOT supporting that"
+  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -s D07229051"
+
+describe "Try to replace UUID in binary supporting that"
+  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+
+describe "Try to replace UUID in binary NOT supporting that"
+  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+
+describe "Try to replace both serial and UUID in binary supporting that"
+  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+
+describe "Try to replace both serial and UUID in binary NOT supporting that"
+  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+
+describe "Try to replace logo using unsupported format (PDF)"
+  approve "$cli logo ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ./data/dummy.pdf"
+
+describe "Try to replace UUID using incorrect format"
+  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u dead-beef"

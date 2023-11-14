@@ -124,3 +124,23 @@ generate`. Typical developer workflow would looks as follows:
 1. Apply changes by `bashly generate`
 1. Test your changes.
 1. If your changes work as expected create pull request.
+
+## Testing
+
+We are using
+[approvals.bash](https://github.com/dannyben/approvals.bash#readme) here.
+
+How to run test and/or refresh the expected outputs:
+
+1. Edit the `./test/approve` to create desired test cases.
+1. Get the test data:
+
+  ```bash
+  ./test/get-test-data.sh
+  ```
+
+1. Run tests (or refresh expected outputs)
+
+  ```bash
+  ./test/approve
+  ```
