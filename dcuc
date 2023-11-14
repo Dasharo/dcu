@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Dasharo Configuration Utility Container
+
+DOCKER_IMAGE="ghcr.io/dasharo/dasharo-sdk:v1.2.0"
+
+docker run -it --rm -v "$(pwd):/app" -w /app $DOCKER_IMAGE ./dcu "$@"

@@ -1,0 +1,21 @@
+dcu - Dasharo Configuration Utility
+
+Usage:
+  dcu COMMAND
+  dcu [COMMAND] --help | -h
+  dcu --version | -v
+
+Commands:
+  smbios   Edit SMBIOS data in a firmware image
+  logo     Insert custom logo boot splash into firmware image
+
+Options:
+  --help, -h
+    Show this help
+
+  --version, -v
+    Show version number
+
+Examples:
+  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
+  dcu logo coreboot.rom -l bootsplash.bmp

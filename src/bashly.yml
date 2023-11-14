@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2023 3mdeb <contact@3mdeb.com>
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name:  dcu
+help: Dasharo Configuration Utility
+version: 0.1.0
+
+commands:
+  - name: smbios
+    alias: s
+    help: Edit SMBIOS data in a firmware image
+    args:
+      - name: dasharo_rom_file
+        required: true
+        help: Dasharo firmware file (e.g. coreboot.rom)
+    flags:
+      - long: --uuid
+        short: -u
+        arg: uuid
+        help: UUID in RFC4122 format to be set in SMBIOS type 1 structure
+      - long: --serial-number
+        short: -s
+        arg: serial
+        help: Serial number to be set in SMBIOS type 1 and type 2 structure
+    examples:
+      - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4
+      - dcu smbios coreboot.rom -s D07229051
+      - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
+  - name: logo
+    alias: l
+    help: Insert custom logo boot splash into firmware image
+    args:
+      - name: dasharo_rom_file
+        required: true
+        help: Dasharo firmware file (e.g. coreboot.rom)
+    flags:
+      - long: --logo
+        short: -l
+        arg: logo
+        help: Custom logo in BMP/PNG/JPG/SVG format to be displayed on boot
+    examples:
+      - dcu logo coreboot.rom -l bootsplash.bmp
+examples:
+  - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
+  - dcu logo coreboot.rom -l bootsplash.bmp
