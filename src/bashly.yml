@@ -25,7 +25,7 @@ commands:
         help: Serial number to be set in SMBIOS type 1 and type 2 structure
   - name: logo
     alias: l
-    help: Insert custom logo boot splash into firmware image 
+    help: Insert custom logo boot splash into firmware image
     args:
       - name: dasharo_rom_file
         required: true

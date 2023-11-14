@@ -12,7 +12,7 @@ Following packages must be installed:
 
 * `imagemagick` (for `convert` command)
 * `util-linux` (for `uuidparse` command)
-* [coreboot's cbfstool](https://github.com/coreboot/coreboot/tree/master/util/cbfstool
+* [coreboot's cbfstool](<https://github.com/coreboot/coreboot/tree/master/util/cbfstool>
 
 The script will exit with an error if any of above are not present.
 
@@ -115,10 +115,12 @@ Please note that after every code modification in `src` you have to run `bashly
 generate`. Typical developer workflow would looks as follows:
 
 1. Set alias for bashly:
+
   ```bash
   alias bashly='docker run --rm -it --user $(id -u):$(id -g) --volume "$PWD:/app" dannyben/bashly'
   ```
-2. Perform code modification in `src` directory.
-3. Apply changes by `bashly generate`
-4. Test your changes.
-5. If your changes work as expected create pull request.
+
+1. Perform code modification in `src` directory.
+1. Apply changes by `bashly generate`
+1. Test your changes.
+1. If your changes work as expected create pull request.

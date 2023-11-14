@@ -44,3 +44,4 @@ repos:
     hooks:
     -   id: shellcheck
         args: ["--severity=warning"]
+        exclude: "^src/.*$"
