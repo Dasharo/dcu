@@ -6,7 +6,16 @@ The Dasharo Configuration Utility is a tool designed to configure Dasharo firmwa
 binary images. It includes task such as customizing the boot logo, and setting
 unique UUIDs or Serial Numbers in SMBIOS tables.
 
+DCU can be run in two modes - standalone, or as a container. The container setup
+contains all of the prerequisites, so it should be easier to use.
+
 ## Prerequisites
+
+### Dasharo Configuration Utility Container
+
+* [Docker Engine installed](https://docs.docker.com/engine/install/)
+
+### Standalone DCU
 
 Following packages must be installed:
 
@@ -16,7 +25,7 @@ Following packages must be installed:
 
 The script will exit with an error if any of above are not present.
 
-### Compiling cbfstool
+#### Compiling cbfstool
 
 The cbfstool can be comppiled from source if needed.
 
@@ -29,6 +38,12 @@ TOOLLDFLAGS=-static sudo make -C util/cbfstool install
 ```
 
 ## Usage
+
+### Dasharo Configuration Container
+
+Simply use `dcuc` instead od `dcu`, and follow the section below.
+
+### Standalone
 
 `dcu` can be used as a standalone script, and is also available in the
 [Dasharo Tools Suite](https://docs.dasharo.com/dasharo-tools-suite/overview/).
