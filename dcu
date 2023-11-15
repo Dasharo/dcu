@@ -340,8 +340,10 @@ dcu_logo_command() {
 
   echo "Setting ${LOGO_FILE} as custom logo"
   convert -background None ${LOGO_FILE} BMP3:/tmp/logo.bmp
-  "${CBFSTOOL}" "${DASHARO_ROM}" remove -n logo.bmp -r BOOTSPLASH > /dev/null 2> /dev/null
-  CBFSTOOL_ERR="$(cbfstool ${DASHARO_ROM} add -f /tmp/logo.bmp -r BOOTSPLASH -n logo.bmp -t raw -c lzma 2>&1)"
+  # We do not care if this one fails. It can fail if serial_number is not
+  # already, there, which is fine.
+  "${CBFSTOOL}" "${DASHARO_ROM}" remove -n logo.bmp -r BOOTSPLASH > /dev/null 2> /dev/null || true
+  CBFSTOOL_ERR="$(${CBFSTOOL} ${DASHARO_ROM} add -f /tmp/logo.bmp -r BOOTSPLASH -n logo.bmp -t raw -c lzma 2>&1)"
   rm /tmp/logo.bmp
 
   if echo "${CBFSTOOL_ERR}" | grep -q "too big"; then
