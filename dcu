@@ -354,6 +354,8 @@ dcu_logo_command() {
     exit 16
   fi
 
+  echo "Success"
+
 }
 
 # :command.parse_requirements
@@ -627,7 +629,7 @@ dcu_logo_parse_requirements() {
 
 # :command.initialize
 initialize() {
-  version="0.1.0"
+  version="0.2.1"
   long_usage=''
   set -e
 

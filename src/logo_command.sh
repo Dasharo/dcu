@@ -38,3 +38,5 @@ if echo "$CBFSTOOL_ERR" | grep -q "The image will be left unmodified"; then
   echo "An error occurred when adding the logo to coreboot image"
   exit 16
 fi
+
+echo "Success"
