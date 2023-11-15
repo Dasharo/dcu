@@ -42,6 +42,22 @@ commands:
         required: true
     examples:
       - dcu logo coreboot.rom -l bootsplash.bmp
+
+dependencies:
+  cbfstool:
+    command: [cbfstool]
+    help: >
+      You can build one from source code:
+        https://github.com/coreboot/coreboot/tree/main/util/cbfstool
+      Or download pre-built version:
+        https://dl.3mdeb.com/open-source-firmware/utilities/cbfstool
+  uuidparse:
+    command: [uuidparse]
+    help: "Please install util-linux package"
+  convert:
+    command: [convert]
+    help: "Please install imagemagick package"
+
 examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp

@@ -237,14 +237,6 @@ dcu_smbios_command() {
   set_uuid() {
     local _uuid="$1"
 
-    if ! which uuidparse > /dev/null 2> /dev/null; then
-      echo "uuidparse not found. Please install util-linux package"
-      echo "ubuntu/debian: apt install util-linux"
-      echo "fedora: dnf install util-linux"
-      echo "redhat/centos: yum install util-linux"
-      exit 2
-    fi
-
     if ! echo "${CB_CONFIG}" | grep -q "CONFIG_DRIVERS_GENERIC_CBFS_UUID=y"; then
       echo "Configurable UUID not supported by the coreboot image"
       exit 7
@@ -335,14 +327,6 @@ dcu_logo_command() {
     exit 12
   fi
 
-  if ! which convert > /dev/null 2> /dev/null; then
-    echo "convert not found. Please install imagemagick package"
-    echo "ubuntu/debian: apt install imagemagick"
-    echo "fedora: dnf install imagemagick"
-    echo "redhat/centos: yum install imagemagick"
-    exit 3
-  fi
-
   if ! file "${LOGO_FILE}" | grep -qE 'PNG image|JPEG image|Scalable Vector Graphics image|PC bitmap'; then
     echo "Invalid or unsupported logo file format"
     exit 13
@@ -394,6 +378,35 @@ parse_requirements() {
 
     esac
   done
+
+  # :command.dependencies_filter
+  if command -v cbfstool >/dev/null 2>&1; then
+    deps['cbfstool']="$(command -v cbfstool | head -n1)"
+  else
+    printf "missing dependency: cbfstool\n" >&2
+    printf "%s\n" "You can build one from source code:
+    https://github.com/coreboot/coreboot/tree/main/util/cbfstool
+  Or download pre-built version:
+    https://dl.3mdeb.com/open-source-firmware/utilities/cbfstool
+  " >&2
+    exit 1
+  fi
+
+  if command -v uuidparse >/dev/null 2>&1; then
+    deps['uuidparse']="$(command -v uuidparse | head -n1)"
+  else
+    printf "missing dependency: uuidparse\n" >&2
+    printf "%s\n" "Please install util-linux package" >&2
+    exit 1
+  fi
+
+  if command -v convert >/dev/null 2>&1; then
+    deps['convert']="$(command -v convert | head -n1)"
+  else
+    printf "missing dependency: convert\n" >&2
+    printf "%s\n" "Please install imagemagick package" >&2
+    exit 1
+  fi
 
   # :command.command_filter
   action=${1:-}
@@ -623,14 +636,7 @@ initialize() {
   #
   # SPDX-License-Identifier: Apache-2.0
 
-  CBFSTOOL="${CBFSTOOL:-$(which cbfstool)}"
-
-  if ! which cbfstool > /dev/null 2> /dev/null; then
-    echo "cbfstool not found."
-    echo "You can build one from source code: https://github.com/coreboot/coreboot/tree/main/util/cbfstool"
-    echo "Or download pre-built version: https://dl.3mdeb.com/open-source-firmware/utilities/cbfstool"
-    exit 5
-  fi
+  CBFSTOOL="cbfstool"
 
 }
 

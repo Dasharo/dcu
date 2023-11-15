@@ -12,14 +12,6 @@ if [ ! -f "${LOGO_FILE}" ]; then
   exit 12
 fi
 
-if ! which convert > /dev/null 2> /dev/null; then
-  echo "convert not found. Please install imagemagick package"
-  echo "ubuntu/debian: apt install imagemagick"
-  echo "fedora: dnf install imagemagick"
-  echo "redhat/centos: yum install imagemagick"
-  exit 3
-fi
-
 if ! file "${LOGO_FILE}" | grep -qE 'PNG image|JPEG image|Scalable Vector Graphics image|PC bitmap'; then
   echo "Invalid or unsupported logo file format"
   exit 13

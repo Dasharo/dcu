@@ -11,14 +11,6 @@ SERIAL_NUMBER="${args[--serial-number]}"
 set_uuid() {
   local _uuid="$1"
 
-  if ! which uuidparse > /dev/null 2> /dev/null; then
-    echo "uuidparse not found. Please install util-linux package"
-    echo "ubuntu/debian: apt install util-linux"
-    echo "fedora: dnf install util-linux"
-    echo "redhat/centos: yum install util-linux"
-    exit 2
-  fi
-
   if ! echo "${CB_CONFIG}" | grep -q "CONFIG_DRIVERS_GENERIC_CBFS_UUID=y"; then
     echo "Configurable UUID not supported by the coreboot image"
     exit 7
