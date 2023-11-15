@@ -39,6 +39,7 @@ commands:
         short: -l
         arg: logo
         help: Custom logo in BMP/PNG/JPG/SVG format to be displayed on boot
+        required: true
     examples:
       - dcu logo coreboot.rom -l bootsplash.bmp
 examples:

@@ -143,7 +143,7 @@ dcu_logo_usage() {
 
     # :command.usage_flags
     # :flag.usage
-    printf "  %s\n" "--logo, -l LOGO"
+    printf "  %s\n" "--logo, -l LOGO (required)"
     printf "    Custom logo in BMP/PNG/JPG/SVG format to be displayed on boot\n"
     echo
 
@@ -601,6 +601,12 @@ dcu_logo_parse_requirements() {
   # :command.required_args_filter
   if [[ -z ${args['dasharo_rom_file']+x} ]]; then
     printf "missing required argument: DASHARO_ROM_FILE\nusage: dcu logo DASHARO_ROM_FILE [OPTIONS]\n" >&2
+    exit 1
+  fi
+
+  # :command.required_flags_filter
+  if [[ -z ${args['--logo']+x} ]]; then
+    printf "missing required flag: --logo, -l LOGO\n" >&2
     exit 1
   fi
 
