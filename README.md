@@ -21,7 +21,7 @@ Following packages must be installed:
 
 * `imagemagick` (for `convert` command)
 * `util-linux` (for `uuidparse` command)
-* [coreboot's cbfstool](<https://github.com/coreboot/coreboot/tree/master/util/cbfstool>
+* [coreboot's cbfstool](https://github.com/coreboot/coreboot/tree/master/util/cbfstool)
 
 The script will exit with an error if any of above are not present.
 
