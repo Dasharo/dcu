@@ -27,7 +27,7 @@ The script will exit with an error if any of above are not present.
 
 #### Compiling cbfstool
 
-The cbfstool can be comppiled from source if needed.
+The cbfstool can be compiled from source if needed.
 
 ```bash
 git clone https://review.coreboot.org/coreboot.git
@@ -43,7 +43,7 @@ TOOLLDFLAGS=-static sudo make -C util/cbfstool install
 [Dasharo Tools Suite](https://docs.dasharo.com/dasharo-tools-suite/overview/).
 
 To use `dcu` as a standalone script (or using a container), you should clone
-the rpository first:
+the repository first:
 
 ```shell
 git clone https://github.com/Dasharo/dcu.git
