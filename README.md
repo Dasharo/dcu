@@ -20,7 +20,7 @@ contains all of the prerequisites, so it should be easier to use.
 Following packages must be installed:
 
 * `imagemagick` (for `convert` command)
-* `util-linux` (for `uuidparse` command)
+* `uuid-runtime` (for `uuidparse` command)
 * [coreboot's cbfstool](https://github.com/coreboot/coreboot/tree/master/util/cbfstool)
 
 The script will exit with an error if any of above are not present.

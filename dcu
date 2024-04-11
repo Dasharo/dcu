@@ -401,7 +401,7 @@ parse_requirements() {
     deps['uuidparse']="$(command -v uuidparse | head -n1)"
   else
     printf "missing dependency: uuidparse\n" >&2
-    printf "%s\n" "Please install util-linux package" >&2
+    printf "%s\n" "Please install uuid-runtime package" >&2
     exit 1
   fi
 

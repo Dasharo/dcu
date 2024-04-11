@@ -54,7 +54,7 @@ dependencies:
         sudo chmod +x /usr/local/bin/cbfstool
   uuidparse:
     command: [uuidparse]
-    help: "Please install util-linux package"
+    help: "Please install uuid-runtime package"
   convert:
     command: [convert]
     help: "Please install imagemagick package"
