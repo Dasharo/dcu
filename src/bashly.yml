@@ -8,7 +8,6 @@ version: 0.2.1
 
 commands:
   - name: smbios
-    alias: s
     help: Edit SMBIOS data in a firmware image
     args:
       - name: dasharo_rom_file
@@ -42,6 +41,26 @@ commands:
         required: true
     examples:
       - dcu logo coreboot.rom -l bootsplash.bmp
+  - name: smmstore
+    help: Edit settings stored in SMMSTORE
+    args:
+      - name: dasharo_rom_file
+        required: true
+        help: Dasharo firmware file (e.g. coreboot.rom)
+    flags:
+      - long: --get
+        arg: var
+        help: Name of an SMMSTORE variable
+      - long: --list
+        help: List available variables
+      - long: --set
+        arg: var
+        help: Name of an SMMSTORE variable
+      - long: --value
+        arg: val
+        help: Value to set in a variable
+    examples:
+      - dcu smmstore coreboot.rom --get EnableWifiBt
 
 dependencies:
   cbfstool:
@@ -58,7 +77,16 @@ dependencies:
   convert:
     command: [convert]
     help: "Please install imagemagick package"
+  smmstoretool:
+    command: [cbfstool]
+    help: >
+      You can build one from source code:
+        https://github.com/Dasharo/dcu#compiling-smmstoretool
+      Or download and install pre-built version with following commands:
+        sudo wget -O /usr/local/bin/smmstoretool https://dl.3mdeb.com/open-source-firmware/utilities/smmstoretool
+        sudo chmod +x /usr/local/bin/smmstoretool
 
 examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp
+  - dcu smmstore coreboot.rom --get EnableWifiBt
