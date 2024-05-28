@@ -37,6 +37,18 @@ strip --strip-unneeded util/cbfstool/cbfstool
 TOOLLDFLAGS=-static sudo make -C util/cbfstool install
 ```
 
+#### Compiling smmstoretool
+
+The smmstoretool can be compiled from source if needed.
+
+```bash
+git clone https://review.coreboot.org/coreboot.git
+cd coreboot
+TOOLLDFLAGS=-static make -C util/smmstoretool
+strip --strip-unneeded util/smmstoretool/smmstoretool
+TOOLLDFLAGS=-static sudo make -C util/smmstoretool install
+```
+
 ## Usage
 
 `dcu` can be used as a standalone script, and is also available in the
