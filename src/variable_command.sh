@@ -83,7 +83,7 @@ acceptedvaluesfor()
 {
   case `typeof $1` in
     bool)
-      echo "Enabled / Disabled"
+      echo "Disabled / Enabled"
       ;;
     memode)
       echo "Enabled / DisabledSoft / DisabledHAP"
