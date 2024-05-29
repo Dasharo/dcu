@@ -3,39 +3,113 @@
 
 cd ./test || exit
 source approvals.bash
+source test-data.sh
 
 # Update me
 cli=../dcu
+
+echo "Setting up test data..."
+download_test_data
+refresh_test_data
 
 describe "help message"
   approve "$cli --help"
 
 describe "Try to replace logo in binary supporting that"
-  approve "$cli logo ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ./data/bootsplash.bmp"
+  approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ${DATA_WORK_DIR}/bootsplash.bmp"
 
 describe "Try to replace logo in binary NOT supporting that"
-  approve "$cli logo ./data/protectli_vault_kbl_v1.0.14.rom -l ./data/bootsplash.bmp"
+  approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_kbl_v1.0.14.rom -l ${DATA_WORK_DIR}/bootsplash.bmp"
 
 describe "Try to replace serial in binary supporting that"
-  approve "$cli smbios .//data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051"
+  approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051"
 
 describe "Try to replace serial in binary NOT supporting that"
-  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -s D07229051"
+  approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -s D07229051"
 
 describe "Try to replace UUID in binary supporting that"
-  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+  approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace UUID in binary NOT supporting that"
-  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+  approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace both serial and UUID in binary supporting that"
-  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+  approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace both serial and UUID in binary NOT supporting that"
-  approve "$cli smbios ./data/novacustom_nv4x_adl_v1.6.0.rom -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
+  approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace logo using unsupported format (PDF)"
-  approve "$cli logo ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ./data/dummy.pdf"
+  approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ${DATA_WORK_DIR}/dummy.pdf"
 
 describe "Try to replace UUID using incorrect format"
-  approve "$cli smbios ./data/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u dead-beef"
+  approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u dead-beef"
+
+refresh_test_data
+
+describe "Get variable from uninitialized store"
+  approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --get SerialRedirection"
+
+describe "Initialize variable store in a release binary"
+  approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirection --value Enabled"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SerialRedirectionDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set supported bool variable to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/SerialRedirectionDisabled_novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirection --value Disabled"
+
+describe "Get supported bool variable (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/SerialRedirectionDisabled_novacustom_nv4x_adl_v1.6.0.rom --get SerialRedirection"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SerialRedirectionEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set supported bool variable to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/SerialRedirectionEnabled_novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirection --value Enabled"
+
+describe "Get supported bool variable (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/SerialRedirectionEnabled_novacustom_nv4x_adl_v1.6.0.rom --get SerialRedirection"
+
+describe "Set supported bool variable to invalid value"
+  approve "$cli variable ${DATA_WORK_DIR}/SerialRedirectionEnabled_novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirection --value EnabledInvalid"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/MeModeEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set MeMode to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeEnabled_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value Enabled"
+
+describe "Get MeMode (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeEnabled_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set MeMode to DisabledSoft"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value DisabledSoft"
+
+describe "Get MeMode (expecting DisabledSoft)"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set MeMode to DisabledHAP"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value DisabledHAP"
+
+describe "Get MeMode (expecting DisabledHAP)"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
+
+describe "Set MeMode to InvalidMode"
+  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value InvalidMode"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/FanCurveSilent_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set FanCurveOption to Silent"
+  approve "$cli variable ${DATA_WORK_DIR}/FanCurveSilent_novacustom_nv4x_adl_v1.6.0.rom --set FanCurveOption --value Silent"
+
+describe "Get FanCurveMode (expecting Silent)"
+  approve "$cli variable ${DATA_WORK_DIR}/FanCurveSilent_novacustom_nv4x_adl_v1.6.0.rom --get FanCurveOption"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/FanCurvePerformance_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set FanCurveOption to Performance"
+  approve "$cli variable ${DATA_WORK_DIR}/FanCurvePerformance_novacustom_nv4x_adl_v1.6.0.rom --set FanCurveOption --value Performance"
+
+describe "Get FanCurveMode (expecting Performance)"
+  approve "$cli variable ${DATA_WORK_DIR}/FanCurvePerformance_novacustom_nv4x_adl_v1.6.0.rom --get FanCurveOption"
+
+describe "Set FanCurveMode to InvalidMode"
+  approve "$cli variable ${DATA_WORK_DIR}/FanCurvePerormance_novacustom_nv4x_adl_v1.6.0.rom --set FanCurveOption --value InvalidMode"
+
+describe "Set unsupported variable"
+  approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirectionInvalid --value Enabled"

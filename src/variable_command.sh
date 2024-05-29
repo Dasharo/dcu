@@ -13,7 +13,7 @@ LIST="${args[--list]}"
 
 typeof()
 {
-  # TODO: determine type programatically
+  # TODO: determine type programmatically
   case $1 in
     LockBios \
     |NetworkBoot \
@@ -45,36 +45,46 @@ valueof()
 {
   case `typeof $1` in
     bool)
-      if [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t bool` = "false" ]; then
+      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t bool)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      if [ "${_result}" = "false" ]; then
         echo "Disabled"
-      elif [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t bool` = "true" ]; then
+      elif [ "${_result}" = "true" ]; then
         echo "Enabled"
       else
         echo "Error!"
-        exit 1
+        exit 18
       fi
       ;;
     memode)
-      if [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8` = "0" ]; then
+      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      if [ "${_result}" = "0" ]; then
         echo "Enabled"
-      elif [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8` = "1" ]; then
+      elif [ "${_result}" = "1" ]; then
         echo "DisabledSoft"
-      elif [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8` = "2" ]; then
+      elif [ "${_result}" = "2" ]; then
         echo "DisabledHAP"
       else
         echo "Error!"
-        exit 1
+        exit 18
       fi
       ;;
     fancurve)
-      if [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8` = "0" ]; then
+      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      if [ "${_result}" = "0" ]; then
         echo "Silent"
-      elif [ `${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8` = "1" ]; then
+      elif [ "${_result}" = "1" ]; then
         echo "Performance"
       else
         echo "Error!"
-        exit 1
+        exit 18
       fi
+      ;;
+    *)
+      echo "Variable \"${1}\" is not supported by the DCU tool yet".
+      exit 20
       ;;
   esac
 }
@@ -98,7 +108,7 @@ acceptedvaluesfor()
 
 get_variable()
 {
-  echo $(valueof ${GET})
+  echo "$(valueof ${GET})"
 }
 
 set_variable()
@@ -108,23 +118,29 @@ set_variable()
     echo "Value to set not provided, exiting" >&2
     exit 1
   fi
-  if [ -z "$(acceptedvaluesfor ${SET})" ]; then
-    echo "Setting ${SET} is not supported"
-    exit 1
+
+  _accepted_values="$(acceptedvaluesfor ${SET})"
+  _accepted_values_split=$(echo ${_accepted_values} | sed "s/\///g")
+  _accepted_values_count=$(echo ${_accepted_values_split} | wc -w)
+
+  if [ -z "${_accepted_values}" ]; then
+    echo "Variable \"${SET}\" is not supported by the DCU tool yet".
+    exit 20
   fi
   i=0
-  for a in $(acceptedvaluesfor ${SET} | sed "s/\///g"); do
+  for a in ${_accepted_values_split} ; do
     if [ $a = ${VALUE} ]; then
       break
     fi
     i=$(($i + 1))
   done
-  if [ ${i} -ge $(echo acceptedvaluesfor ${SET} | sed "s/\///g" | wc -w) ]; then
-    echo "Value ${VALUE} is out of range (expected one of: $(acceptedvaluesfor ${SET}))"
+  if [ ${i} -ge ${_accepted_values_count} ]; then
+    echo "Value ${VALUE} is out of range (expected one of: ${_accepted_values})"
     exit 1
   fi
 
   ${SMMSTORETOOL} ${DASHARO_ROM} set -g dasharo -n ${SET} -t uint8 -v ${i}
+  echo "Successfully set variable ${SET} in the variable store."
 }
 
 list_variables()
@@ -148,7 +164,6 @@ list_variables()
         ;;
     esac
   done
-
 }
 
 if [ -n "${GET}" ]

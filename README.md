@@ -136,11 +136,6 @@ We are using
 How to run test and/or refresh the expected outputs:
 
 1. Edit the `./test/approve` to create desired test cases.
-1. Get the test data:
-
-  ```bash
-  ./test/get-test-data.sh
-  ```
 
 1. Run tests (or refresh expected outputs)
 
