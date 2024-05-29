@@ -108,6 +108,10 @@ set_variable()
     echo "Value to set not provided, exiting" >&2
     exit 1
   fi
+  if [ $(acceptedvaluesfor ${SET}) -z ]; then
+    echo "Setting ${SET} is not supported"
+    exit 1
+  fi
   i=0
   for a in $(acceptedvaluesfor ${SET} | sed "s/\///g"); do
     if [ $a = ${VALUE} ]; then
