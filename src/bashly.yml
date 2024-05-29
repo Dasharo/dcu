@@ -8,6 +8,7 @@ version: 0.2.1
 
 commands:
   - name: smbios
+    alias: s
     help: Edit SMBIOS data in a firmware image
     args:
       - name: dasharo_rom_file
@@ -42,6 +43,7 @@ commands:
     examples:
       - dcu logo coreboot.rom -l bootsplash.bmp
   - name: variable
+    alias: v
     help: Edit Dasharo configuration variables
     args:
       - name: dasharo_rom_file

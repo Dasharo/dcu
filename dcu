@@ -73,6 +73,9 @@ dcu_smbios_usage() {
 
   fi
 
+  printf "Alias: s\n"
+  echo
+
   printf "%s\n" "Usage:"
   printf "  dcu smbios DASHARO_ROM_FILE [OPTIONS]\n"
   printf "  dcu smbios --help | -h\n"
@@ -178,6 +181,9 @@ dcu_variable_usage() {
     echo
 
   fi
+
+  printf "Alias: v\n"
+  echo
 
   printf "%s\n" "Usage:"
   printf "  dcu variable DASHARO_ROM_FILE [OPTIONS]\n"
@@ -673,7 +679,7 @@ parse_requirements() {
   case $action in
     -*) ;;
 
-    smbios)
+    smbios | s)
       action="smbios"
       shift
       dcu_smbios_parse_requirements "$@"
@@ -687,7 +693,7 @@ parse_requirements() {
       shift $#
       ;;
 
-    variable)
+    variable | v)
       action="variable"
       shift
       dcu_variable_parse_requirements "$@"
