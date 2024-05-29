@@ -41,8 +41,8 @@ commands:
         required: true
     examples:
       - dcu logo coreboot.rom -l bootsplash.bmp
-  - name: smmstore
-    help: Edit settings stored in SMMSTORE
+  - name: variable
+    help: Edit Dasharo configuration variables
     args:
       - name: dasharo_rom_file
         required: true
@@ -50,15 +50,15 @@ commands:
     flags:
       - long: --get
         arg: var
-        help: Name of an SMMSTORE variable
+        help: Name of the variable to get
       - long: --list
         help: List available variables
       - long: --set
         arg: var
-        help: Name of an SMMSTORE variable
+        help: Name of the variable to set
       - long: --value
         arg: val
-        help: Value to set in a variable
+        help: Value to set a variable to
     examples:
       - dcu smmstore coreboot.rom --get EnableWifiBt
 
@@ -78,7 +78,7 @@ dependencies:
     command: [convert]
     help: "Please install imagemagick package"
   smmstoretool:
-    command: [cbfstool]
+    command: [smmstoretool]
     help: >
       You can build one from source code:
         https://github.com/Dasharo/dcu#compiling-smmstoretool

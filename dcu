@@ -36,7 +36,7 @@ dcu_usage() {
   printf "%s\n" "Commands:"
   printf "  %s   Edit SMBIOS data in a firmware image\n" "smbios  "
   printf "  %s   Insert custom logo boot splash into firmware image\n" "logo    "
-  printf "  %s   Edit settings stored in SMMSTORE\n" "smmstore"
+  printf "  %s   Edit Dasharo configuration variables\n" "variable"
   echo
 
   # :command.long_usage
@@ -168,20 +168,20 @@ dcu_logo_usage() {
 }
 
 # :command.usage
-dcu_smmstore_usage() {
+dcu_variable_usage() {
   if [[ -n $long_usage ]]; then
-    printf "dcu smmstore - Edit settings stored in SMMSTORE\n"
+    printf "dcu variable - Edit Dasharo configuration variables\n"
     echo
 
   else
-    printf "dcu smmstore - Edit settings stored in SMMSTORE\n"
+    printf "dcu variable - Edit Dasharo configuration variables\n"
     echo
 
   fi
 
   printf "%s\n" "Usage:"
-  printf "  dcu smmstore DASHARO_ROM_FILE [OPTIONS]\n"
-  printf "  dcu smmstore --help | -h\n"
+  printf "  dcu variable DASHARO_ROM_FILE [OPTIONS]\n"
+  printf "  dcu variable --help | -h\n"
   echo
 
   # :command.long_usage
@@ -191,7 +191,7 @@ dcu_smmstore_usage() {
     # :command.usage_flags
     # :flag.usage
     printf "  %s\n" "--get VAR"
-    printf "    Name of an SMMSTORE variable\n"
+    printf "    Name of the variable to get\n"
     echo
 
     # :flag.usage
@@ -201,12 +201,12 @@ dcu_smmstore_usage() {
 
     # :flag.usage
     printf "  %s\n" "--set VAR"
-    printf "    Name of an SMMSTORE variable\n"
+    printf "    Name of the variable to set\n"
     echo
 
     # :flag.usage
     printf "  %s\n" "--value VAL"
-    printf "    Value to set in a variable\n"
+    printf "    Value to set a variable to\n"
     echo
 
     # :command.usage_fixed_flags
@@ -443,8 +443,8 @@ dcu_logo_command() {
 }
 
 # :command.function
-dcu_smmstore_command() {
-  # src/smmstore_command.sh
+dcu_variable_command() {
+  # src/variable_command.sh
   # SPDX-FileCopyrightText: 2024 3mdeb <contact@3mdeb.com>
   #
   # SPDX-License-Identifier: Apache-2.0
@@ -555,7 +555,7 @@ dcu_smmstore_command() {
       echo "Value to set not provided, exiting" >&2
       exit 1
     fi
-    if [ $(acceptedvaluesfor ${SET}) -z ]; then
+    if [ -z "$(acceptedvaluesfor ${SET})" ]; then
       echo "Setting ${SET} is not supported"
       exit 1
     fi
@@ -659,8 +659,8 @@ parse_requirements() {
     exit 1
   fi
 
-  if command -v cbfstool >/dev/null 2>&1; then
-    deps['smmstoretool']="$(command -v cbfstool | head -n1)"
+  if command -v smmstoretool >/dev/null 2>&1; then
+    deps['smmstoretool']="$(command -v smmstoretool | head -n1)"
   else
     printf "missing dependency: smmstoretool\n" >&2
     printf "%s\n" "You can build one from source code:\n  https://github.com/Dasharo/dcu#compiling-smmstoretool\nOr download and install pre-built version with following commands:\n  sudo wget -O /usr/local/bin/smmstoretool https://dl.3mdeb.com/open-source-firmware/utilities/smmstoretool\n  sudo chmod +x /usr/local/bin/smmstoretool\n" >&2
@@ -687,10 +687,10 @@ parse_requirements() {
       shift $#
       ;;
 
-    smmstore)
-      action="smmstore"
+    variable)
+      action="variable"
       shift
-      dcu_smmstore_parse_requirements "$@"
+      dcu_variable_parse_requirements "$@"
       shift $#
       ;;
 
@@ -889,13 +889,13 @@ dcu_logo_parse_requirements() {
 }
 
 # :command.parse_requirements
-dcu_smmstore_parse_requirements() {
+dcu_variable_parse_requirements() {
   # :command.fixed_flags_filter
   while [[ $# -gt 0 ]]; do
     case "${1:-}" in
       --help | -h)
         long_usage=yes
-        dcu_smmstore_usage
+        dcu_variable_usage
         exit
         ;;
 
@@ -907,7 +907,7 @@ dcu_smmstore_parse_requirements() {
   done
 
   # :command.command_filter
-  action="smmstore"
+  action="variable"
 
   # :command.parse_requirements_while
   while [[ $# -gt 0 ]]; do
@@ -987,7 +987,7 @@ dcu_smmstore_parse_requirements() {
 
   # :command.required_args_filter
   if [[ -z ${args['dasharo_rom_file']+x} ]]; then
-    printf "missing required argument: DASHARO_ROM_FILE\nusage: dcu smmstore DASHARO_ROM_FILE [OPTIONS]\n" >&2
+    printf "missing required argument: DASHARO_ROM_FILE\nusage: dcu variable DASHARO_ROM_FILE [OPTIONS]\n" >&2
     exit 1
   fi
 
@@ -1022,7 +1022,7 @@ run() {
   case "$action" in
     "smbios") dcu_smbios_command ;;
     "logo") dcu_logo_command ;;
-    "smmstore") dcu_smmstore_command ;;
+    "variable") dcu_variable_command ;;
   esac
 }
 
