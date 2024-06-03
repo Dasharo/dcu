@@ -111,6 +111,8 @@ Common actions:
 * 15 - logo file too big to fit in given coreboot image
 * 16 - failed to set the logo (more detailed error information in the script
        output)
+* 18 - failed to read value of a configuration variable
+* 20 - configuration variable not yet supported in DCU
 
 ## Development
 
