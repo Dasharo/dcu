@@ -62,9 +62,9 @@ valueof()
       if [ "${_result}" = "0" ]; then
         echo "Enabled"
       elif [ "${_result}" = "1" ]; then
-        echo "DisabledSoft"
+        echo "Disabled (Soft)"
       elif [ "${_result}" = "2" ]; then
-        echo "DisabledHAP"
+        echo "Disabled (HAP)"
       else
         echo "Error!"
         exit 18
@@ -96,7 +96,7 @@ acceptedvaluesfor()
       echo "Disabled / Enabled"
       ;;
     memode)
-      echo "Enabled / DisabledSoft / DisabledHAP"
+      echo "Enabled / Disabled (Soft) / Disabled (HAP)"
       ;;
     fancurve)
       echo "Silent / Performance"
@@ -120,16 +120,19 @@ set_variable()
   fi
 
   _accepted_values="$(acceptedvaluesfor ${SET})"
-  _accepted_values_split=$(echo ${_accepted_values} | sed "s/\///g")
-  _accepted_values_count=$(echo ${_accepted_values_split} | wc -w)
+  _accepted_values_split=$(echo ${_accepted_values} | sed 's/\//\n/g')
+  _accepted_values_count=$(echo "${_accepted_values_split}" | wc -l)
 
   if [ -z "${_accepted_values}" ]; then
     echo "Variable \"${SET}\" is not supported by the DCU tool yet".
     exit 20
   fi
   i=0
-  for a in ${_accepted_values_split} ; do
-    if [ $a = ${VALUE} ]; then
+  echo $_accepted_values_count
+  export IFS="/"
+  for a in ${_accepted_values} ; do
+    a=$(echo $a | awk '{$1=$1};1')
+    if [ "$a" = "${VALUE}" ]; then
       break
     fi
     i=$(($i + 1))
