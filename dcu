@@ -55,7 +55,7 @@ dcu_usage() {
     printf "%s\n" "Examples:"
     printf "  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051\n"
     printf "  dcu logo coreboot.rom -l bootsplash.bmp\n"
-    printf "  dcu smmstore coreboot.rom --get EnableWifiBt\n"
+    printf "  dcu variable coreboot.rom --get EnableWifiBt\n"
     echo
 
   fi
@@ -230,7 +230,8 @@ dcu_variable_usage() {
 
     # :command.usage_examples
     printf "%s\n" "Examples:"
-    printf "  dcu smmstore coreboot.rom --get EnableWifiBt\n"
+    printf "  dcu variable coreboot.rom --get EnableWifiBt\n"
+    printf "  dcu variable coreboot.rom --set EnableWifiBt --value Disabled\n"
     echo
 
   fi

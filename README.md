@@ -111,6 +111,8 @@ Common actions:
 * 15 - logo file too big to fit in given coreboot image
 * 16 - failed to set the logo (more detailed error information in the script
        output)
+* 17 - tried to read a variable that isn't set yet, most likely because the
+       firmware image has not been booted yet
 * 18 - failed to read value of a configuration variable
 * 20 - configuration variable not yet supported in DCU
 

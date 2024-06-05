@@ -62,7 +62,8 @@ commands:
         arg: val
         help: Value to set a variable to
     examples:
-      - dcu smmstore coreboot.rom --get EnableWifiBt
+      - dcu variable coreboot.rom --get EnableWifiBt
+      - dcu variable coreboot.rom --set EnableWifiBt --value Disabled
 
 dependencies:
   cbfstool:
@@ -91,4 +92,4 @@ dependencies:
 examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp
-  - dcu smmstore coreboot.rom --get EnableWifiBt
+  - dcu variable coreboot.rom --get EnableWifiBt
