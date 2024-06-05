@@ -176,16 +176,10 @@ list_variables()
   echo -e "NAME\tVALUE\tACCEPTED VALUES"
   for var in $variables; do
     case `typeof $var` in
-      enum_bool)
-        echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
-        ;;
-      enum_memode)
-        echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
-        ;;
-      enum_fancurve)
-        echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
-        ;;
-      uint8)
+      enum_bool \
+      |enum_memode \
+      |enum_fancurve \
+      |uint8)
         echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
         ;;
       *)
