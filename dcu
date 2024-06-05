@@ -480,13 +480,16 @@ dcu_variable_command() {
       |EnableWifiBt \
       |SerialRedirection \
       |SerialRedirection2)
-        echo "bool"
+        echo "enum_bool"
         ;;
       MeMode)
-        echo "memode"
+        echo "enum_memode"
         ;;
       FanCurveOption)
-        echo "fancurve"
+        echo "enum_fancurve"
+        ;;
+      CpuThrottlingThreshold)
+        echo "uint8"
         ;;
       *)
         echo "unknown"
@@ -497,7 +500,7 @@ dcu_variable_command() {
   valueof()
   {
     case `typeof $1` in
-      bool)
+      enum_bool)
         _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t bool)"
         error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
         if [ "${_result}" = "false" ]; then
@@ -509,7 +512,7 @@ dcu_variable_command() {
           exit 18
         fi
         ;;
-      memode)
+      enum_memode)
         _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
         error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
         if [ "${_result}" = "0" ]; then
@@ -523,7 +526,7 @@ dcu_variable_command() {
           exit 18
         fi
         ;;
-      fancurve)
+      enum_fancurve)
         _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
         error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
         if [ "${_result}" = "0" ]; then
@@ -535,6 +538,11 @@ dcu_variable_command() {
           exit 18
         fi
         ;;
+      uint8)
+        _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+        error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+        echo ${_result}
+        ;;
       *)
         echo "Variable \"${1}\" is not supported by the DCU tool yet".
         exit 20
@@ -545,14 +553,17 @@ dcu_variable_command() {
   acceptedvaluesfor()
   {
     case `typeof $1` in
-      bool)
+      enum_bool)
         echo "Disabled / Enabled"
         ;;
-      memode)
+      enum_memode)
         echo "Enabled / Disabled (Soft) / Disabled (HAP)"
         ;;
-      fancurve)
+      enum_fancurve)
         echo "Silent / Performance"
+        ;;
+      uint8)
+        echo "0-255 (Actual supported values may vary)"
         ;;
       *)
         ;;
@@ -572,30 +583,41 @@ dcu_variable_command() {
       exit 1
     fi
 
-    _accepted_values="$(acceptedvaluesfor ${SET})"
-    _accepted_values_split=$(echo ${_accepted_values} | sed 's/\//\n/g')
-    _accepted_values_count=$(echo "${_accepted_values_split}" | wc -l)
+    if [[ $(typeof ${SET}) == enum_* ]]
+    then
+      # Enums: Find the index of the value in the list of accepted values, and
+      # write it to the underlying variable as uint8.
+      _accepted_values="$(acceptedvaluesfor ${SET})"
+      _accepted_values_split=$(echo ${_accepted_values} | sed 's/\//\n/g')
+      _accepted_values_count=$(echo "${_accepted_values_split}" | wc -l)
 
-    if [ -z "${_accepted_values}" ]; then
-      echo "Variable \"${SET}\" is not supported by the DCU tool yet".
-      exit 20
-    fi
-    i=0
-    echo $_accepted_values_count
-    export IFS="/"
-    for a in ${_accepted_values} ; do
-      a=$(echo $a | awk '{$1=$1};1')
-      if [ "$a" = "${VALUE}" ]; then
-        break
+      if [ -z "${_accepted_values}" ]; then
+        echo "Variable \"${SET}\" is not supported by the DCU tool yet".
+        exit 20
       fi
-      i=$(($i + 1))
-    done
-    if [ ${i} -ge ${_accepted_values_count} ]; then
-      echo "Value ${VALUE} is out of range (expected one of: ${_accepted_values})"
-      exit 1
+      i=0
+      echo $_accepted_values_count
+      export IFS="/"
+      for a in ${_accepted_values} ; do
+        a=$(echo $a | awk '{$1=$1};1')
+        if [ "$a" = "${VALUE}" ]; then
+          break
+        fi
+        i=$(($i + 1))
+      done
+      if [ ${i} -ge ${_accepted_values_count} ]; then
+        echo "Value ${VALUE} is out of range (expected one of: ${_accepted_values})"
+        exit 1
+      fi
+      set_value=${i}
+      set_type="uint8"
+    else
+      # All other types: Pass the type and value directly.
+      set_value=${VALUE}
+      set_type=$(typeof ${SET})
     fi
 
-    ${SMMSTORETOOL} ${DASHARO_ROM} set -g dasharo -n ${SET} -t uint8 -v ${i}
+    ${SMMSTORETOOL} ${DASHARO_ROM} set -g dasharo -n ${SET} -t ${set_type} -v ${set_value}
     echo "Successfully set variable ${SET} in the variable store."
   }
 
@@ -607,13 +629,16 @@ dcu_variable_command() {
     echo -e "NAME\tVALUE\tACCEPTED VALUES"
     for var in $variables; do
       case `typeof $var` in
-        bool)
+        enum_bool)
           echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
           ;;
-        memode)
+        enum_memode)
           echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
           ;;
-        fancurve)
+        enum_fancurve)
+          echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
+          ;;
+        uint8)
           echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
           ;;
         *)
