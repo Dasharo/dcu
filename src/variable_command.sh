@@ -10,6 +10,12 @@ GET="${args[--get]}"
 VALUE="${args[--value]}"
 SET="${args[--set]}"
 LIST="${args[--list]}"
+LIST_SUPPORTED="${args[--list-supported]}"
+
+supported_variables=$(echo "LockBios NetworkBoot UsbDriverStack SmmBwp"\
+                    "Ps2Controller BootManagerEnabled PCIeResizeableBarsEnabled"\
+                    "EnableCamera EnableWifiBt SerialRedirection SerialRedirection2"\
+                    "MeMode FanCurveOption CpuThrottlingThreshold")
 
 typeof()
 {
@@ -143,7 +149,6 @@ set_variable()
       exit 20
     fi
     i=0
-    echo $_accepted_values_count
     export IFS="/"
     for a in ${_accepted_values} ; do
       a=$(echo $a | awk '{$1=$1};1')
@@ -170,7 +175,7 @@ set_variable()
 
 list_variables()
 {
-  echo "Settings that can be modified using this tool:"
+  echo "Settings in ${DASHARO_ROM}:"
   variables=$(${SMMSTORETOOL} ${DASHARO_ROM} list | grep "dasharo" | sed 's/.*://; s/(.*//')
   tabs 30
   echo -e "NAME\tVALUE\tACCEPTED VALUES"
@@ -188,6 +193,16 @@ list_variables()
   done
 }
 
+list_supported_variables()
+{
+  echo "Settings that can be modified using this tool":
+  tabs 30
+  echo -e "NAME\tACCEPTED VALUES"
+  for var in $supported_variables; do
+    echo -e "$var\t$(acceptedvaluesfor $var)"
+  done
+}
+
 if [ -n "${GET}" ]
 then
   get_variable
@@ -197,4 +212,7 @@ then
 elif [ -n "${SET}" ]
 then
   set_variable
+elif [ -n "${LIST_SUPPORTED}" ]
+then
+  list_supported_variables
 fi

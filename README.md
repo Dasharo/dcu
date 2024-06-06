@@ -92,30 +92,38 @@ Common actions:
 * Get a list of settings in a binary
 
 ```bash
-./dcu variable coreboot.rom --list
-Settings that can be modified using this tool:
-NAME	VALUE	ACCEPTED VALUES
-LockBios	Enabled	Disabled / Enabled
-NetworkBoot	Disabled	Disabled / Enabled
-UsbDriverStack	Enabled	Disabled / Enabled
-UsbMassStorage	Enabled	Disabled / Enabled
-SmmBwp	Disabled	Disabled / Enabled
-MeMode	Disabled (Soft)	Enabled / Disabled (Soft) / Disabled (HAP)
-Ps2Controller	Enabled	Disabled / Enabled
-BootManagerEnabled	Enabled	Disabled / Enabled
-FanCurveOption	Silent	Silent / Performance
-PCIeResizeableBarsEnabled	Disabled	Disabled / Enabled
-EnableCamera	Enabled	Disabled / Enabled
-EnableWifiBt	Enabled	Disabled / Enabled
-SerialRedirection	Disabled	Disabled / Enabled
-SerialRedirection2	Disabled	Disabled / Enabled
-CpuThrottlingThreshold	100	0-255 (Actual supported values may vary)
+/dcu variable --list coreboot.rom
+Settings in coreboot.rom:
+NAME		VALUE			ACCEPTED VALUES
+MeMode		Disabled (Soft)		Enabled / Disabled (Soft) / Disabled (HAP)
 ```
 
 * Change a setting
 
 ```bash
 ./dcu variable coreboot.rom --set "MeMode" --value "Disabled (Soft)"
+```
+
+* Get a list of settings supported by this tool:
+
+```bash
+./dcu variable --list-supported coreboot.rom
+Settings that can be modified using this tool:
+NAME				ACCEPTED VALUES
+LockBios			Disabled / Enabled
+NetworkBoot			Disabled / Enabled
+UsbDriverStack			Disabled / Enabled
+SmmBwp				Disabled / Enabled
+Ps2Controller			Disabled / Enabled
+BootManagerEnabled		Disabled / Enabled
+PCIeResizeableBarsEnabled	Disabled / Enabled
+EnableCamera			Disabled / Enabled
+EnableWifiBt			Disabled / Enabled
+SerialRedirection		Disabled / Enabled
+SerialRedirection2		Disabled / Enabled
+MeMode				Enabled / Disabled (Soft) / Disabled (HAP)
+FanCurveOption			Silent / Performance
+CpuThrottlingThreshold		0-255 (Actual supported values may vary)
 ```
 
 > Note: Actual implemented values may vary between devices. For example, CPU

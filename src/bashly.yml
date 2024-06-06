@@ -54,7 +54,9 @@ commands:
         arg: var
         help: Name of the variable to get
       - long: --list
-        help: List available variables
+        help: List variables in a binary
+      - long: --list-supported
+        help: List variables supported by this tool
       - long: --set
         arg: var
         help: Name of the variable to set
