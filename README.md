@@ -37,6 +37,18 @@ strip --strip-unneeded util/cbfstool/cbfstool
 TOOLLDFLAGS=-static sudo make -C util/cbfstool install
 ```
 
+#### Compiling smmstoretool
+
+The smmstoretool can be compiled from source if needed.
+
+```bash
+git clone https://review.coreboot.org/coreboot.git
+cd coreboot
+TOOLLDFLAGS=-static make -C util/smmstoretool
+strip --strip-unneeded util/smmstoretool/smmstoretool
+TOOLLDFLAGS=-static sudo make -C util/smmstoretool install
+```
+
 ## Usage
 
 `dcu` can be used as a standalone script, and is also available in the
@@ -77,6 +89,47 @@ Common actions:
 ./dcu logo coreboot.rom -l bootsplash.bmp
 ```
 
+* Get a list of settings in a binary
+
+```bash
+/dcu variable --list coreboot.rom
+Settings in coreboot.rom:
+NAME		VALUE			ACCEPTED VALUES
+MeMode		Disabled (Soft)		Enabled / Disabled (Soft) / Disabled (HAP)
+```
+
+* Change a setting
+
+```bash
+./dcu variable coreboot.rom --set "MeMode" --value "Disabled (Soft)"
+```
+
+* Get a list of settings supported by this tool:
+
+```bash
+./dcu variable --list-supported coreboot.rom
+Settings that can be modified using this tool:
+NAME				ACCEPTED VALUES
+LockBios			Disabled / Enabled
+NetworkBoot			Disabled / Enabled
+UsbDriverStack			Disabled / Enabled
+SmmBwp				Disabled / Enabled
+Ps2Controller			Disabled / Enabled
+BootManagerEnabled		Disabled / Enabled
+PCIeResizeableBarsEnabled	Disabled / Enabled
+EnableCamera			Disabled / Enabled
+EnableWifiBt			Disabled / Enabled
+SerialRedirection		Disabled / Enabled
+SerialRedirection2		Disabled / Enabled
+MeMode				Enabled / Disabled (Soft) / Disabled (HAP)
+FanCurveOption			Silent / Performance
+CpuThrottlingThreshold		0-255 (Actual supported values may vary)
+```
+
+> Note: Actual implemented values may vary between devices. For example, CPU
+> throttling temperature is adjustable from TjMax to TjMax-63. To see what
+> values are implemented in a given build, check the UEFI setup menu.
+
 ## Error codes
 
 * 0 - no error
@@ -99,6 +152,10 @@ Common actions:
 * 15 - logo file too big to fit in given coreboot image
 * 16 - failed to set the logo (more detailed error information in the script
        output)
+* 17 - tried to read a variable that isn't set yet, most likely because the
+       firmware image has not been booted yet
+* 18 - failed to read value of a configuration variable
+* 20 - configuration variable not yet supported in DCU
 
 ## Development
 
@@ -124,11 +181,6 @@ We are using
 How to run test and/or refresh the expected outputs:
 
 1. Edit the `./test/approve` to create desired test cases.
-1. Get the test data:
-
-  ```bash
-  ./test/get-test-data.sh
-  ```
 
 1. Run tests (or refresh expected outputs)
 
