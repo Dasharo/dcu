@@ -71,11 +71,7 @@ dependencies:
   cbfstool:
     command: [cbfstool]
     help: >
-      You can build one from source code:
-        https://github.com/Dasharo/dcu#compiling-cbfstool
-      Or download and install pre-built version with following commands:
-        sudo wget -O /usr/local/bin/cbfstool https://dl.3mdeb.com/open-source-firmware/utilities/cbfstool
-        sudo chmod +x /usr/local/bin/cbfstool
+      You can build one from source code: https://github.com/Dasharo/dcu#compiling-cbfstool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
   uuidparse:
     command: [uuidparse]
     help: "Please install util-linux package"
@@ -85,11 +81,7 @@ dependencies:
   smmstoretool:
     command: [smmstoretool]
     help: >
-      You can build one from source code:
-        https://github.com/Dasharo/dcu#compiling-smmstoretool
-      Or download and install pre-built version with following commands:
-        sudo wget -O /usr/local/bin/smmstoretool https://dl.3mdeb.com/open-source-firmware/utilities/smmstoretool
-        sudo chmod +x /usr/local/bin/smmstoretool
+      You can build one from source code: https://github.com/Dasharo/dcu#compiling-smmstoretool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
 
 examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
