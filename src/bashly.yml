@@ -7,6 +7,18 @@ help: Dasharo Configuration Utility
 version: 0.2.1
 
 commands:
+  - name: setmac
+    alias: m
+    help: Set MAC adress in a firmare image
+    args:
+      - name: dasharo_rom_file
+        required: true
+        help: Dasharo firmware file (e.g. coreboot.rom)
+    flags:
+      - long: --mac
+        short: -m
+        arg: mac
+        help: MAC address to set
   - name: smbios
     alias: s
     help: Edit SMBIOS data in a firmware image
@@ -82,8 +94,13 @@ dependencies:
     command: [smmstoretool]
     help: >
       You can build one from source code: https://github.com/Dasharo/dcu#compiling-smmstoretool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
+  nvmtool:
+    command: [nvmtool]
+    help: >
+      You can build one from source code: https://github.com/Dasharo/dcu#compiling-nvmtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
 
 examples:
+  - dcu setmac coreboot.rom 12:34:45:56:78:9A
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp
   - dcu variable coreboot.rom --get EnableWifiBt
