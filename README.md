@@ -68,6 +68,17 @@ executable into a directory existing in your $PATH, for example:
 * `usr/bin`.
 * $HOME/.local/bin
 
+#### Compiling ifdtool
+
+The ifdtool can be compiled from source if needed.
+
+```bash
+git clone https://review.coreboot.org/coreboot.git
+cd coreboot
+make -C util/ifdtool
+sudo make -C util/ifdtool install
+```
+
 ## Usage
 
 `dcu` can be used as a standalone script, and is also available in the
