@@ -49,6 +49,25 @@ strip --strip-unneeded util/smmstoretool/smmstoretool
 TOOLLDFLAGS=-static sudo make -C util/smmstoretool install
 ```
 
+#### Compiling nvmtool
+
+The nvmtool can be compiled from source if needed.
+
+```bash
+git clone https://review.coreboot.org/coreboot.git
+cd coreboot
+git fetch https://review.coreboot.org/coreboot refs/changes/29/67129/5
+git checkout -b change-67129 FETCH_HEAD
+cd util/nvmtool
+make
+```
+
+Now you can install it by copying or linking the resulting `nvm`
+executable into a directory existing in your $PATH, for example:
+* `usr/local/bin`
+* `usr/bin`.
+* $HOME/.local/bin
+
 ## Usage
 
 `dcu` can be used as a standalone script, and is also available in the
