@@ -7,20 +7,21 @@ help: Dasharo Configuration Utility
 version: 0.2.1
 
 commands:
-  - name: setmac
+  - name: mac
     alias: m
-    help: Set MAC adress in a firmare image
+    help: Get/set MAC adress in a firmare image
     args:
       - name: dasharo_rom_file
         required: true
         help: Dasharo firmware file (e.g. coreboot.rom)
     flags:
-      - long: --mac
-        short: -m
+      - long: --set
+        short: -s
         arg: mac
-        help: MAC address to set
+        help: Set mac address
     examples:
-      - dcu setmac coreboot.rom -m AB:CD:EF:01:23:45
+      - dcu mac coreboot.rom --set AB:CD:EF:01:23:45
+      - dcu mac coreboot.rom --get
   - name: smbios
     alias: s
     help: Edit SMBIOS data in a firmware image
@@ -97,10 +98,13 @@ dependencies:
     help: >
       You can build one from source code: https://github.com/Dasharo/dcu#compiling-smmstoretool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
   nvmtool:
-    command: [nvmtool]
+    command: [nvm]
     help: >
       You can build one from source code: https://github.com/Dasharo/dcu#compiling-nvmtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
-
+  ifdtool:
+    command: [ifdtool]
+    help: > 
+      You can build one from source code: https://github.com/Dasharo/dcu#compiling-ifdtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
 examples:
   - dcu setmac coreboot.rom 12:34:45:56:78:9A
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
