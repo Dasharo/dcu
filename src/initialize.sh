@@ -4,6 +4,7 @@
 
 CBFSTOOL="cbfstool"
 SMMSTORETOOL="smmstoretool"
+NVMTOOL="nvmtool"
 
 error_exit() {
   _error_msg="$1"
