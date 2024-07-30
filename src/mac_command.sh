@@ -13,8 +13,20 @@ set_mac() {
   local _mac="$1"
 
   "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
-  "${NVMTOOL}" "flashregion_3_gbe.bin" copy 0 || { echo "Failed to copy region 0 to region 1" ; return 1; }
-  "${NVMTOOL}" "flashregion_3_gbe.bin" setmac "${_mac}" || { echo "Failed to set MAC address" ; return 1; }
+
+  if "${NVMTOOL}" "flashregion_3_gbe.bin" copy 0; then
+    echo "Copying region 0 to region 1"
+  else
+    echo "Failed to copy region 0 to region 1"
+    if "${NVMTOOL}" "flashregion_3_gbe.bin" copy 1; then
+      echo "Copying region 1 to region 0"
+    else
+      echo "Failed to copy region 1 to region 0"
+      echo "Both regions are invalid, aborting"
+      return 1
+    fi
+  fi
+
   "${IFDTOOL}" -i gbe:flashregion_3_gbe.bin "${DASHARO_ROM}" || { echo "Failed to insert gbe to the binary" ; return 1; }
   # echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
   # mv "${DASHARO_ROM}.new" "${DASHARO_ROM}"
