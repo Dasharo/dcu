@@ -9,7 +9,7 @@ version: 0.2.1
 commands:
   - name: mac
     alias: m
-    help: Get/set MAC adress in a firmare image
+    help: Get/set MAC address in a firmware image
     args:
       - name: dasharo_rom_file
         required: true
@@ -103,8 +103,8 @@ dependencies:
       You can build one from source code: https://github.com/Dasharo/dcu#compiling-nvmtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
   ifdtool:
     command: [ifdtool]
-    help: > 
-      You can build one from source code: https://github.com/Dasharo/dcu#compiling-ifdtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
+    help: >
+      You can build one from source code: https://github.com/Dasharo/dcu#compiling-nvmtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container
 examples:
   - dcu setmac coreboot.rom 12:34:45:56:78:9A
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051

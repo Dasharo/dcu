@@ -26,7 +26,7 @@ dcu_usage() {
   echo
   # :command.usage_commands
   printf "%s\n" "Commands:"
-  printf "  %s   Get/set MAC adress in a firmare image\n" "mac     "
+  printf "  %s   Get/set MAC address in a firmware image\n" "mac     "
   printf "  %s   Edit SMBIOS data in a firmware image\n" "smbios  "
   printf "  %s   Insert custom logo boot splash into firmware image\n" "logo    "
   printf "  %s   Edit Dasharo configuration variables\n" "variable"
@@ -57,7 +57,7 @@ dcu_usage() {
 
 # :command.usage
 dcu_mac_usage() {
-  printf "dcu mac - Get/set MAC adress in a firmare image\n\n"
+  printf "dcu mac - Get/set MAC address in a firmware image\n\n"
   printf "Alias: m\n"
   echo
 
@@ -340,7 +340,7 @@ dcu_mac_command() {
   set_mac() {
     local _mac="$1"
 
-    "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null || { echo "Failed to extract sections" ; return 1; }
+    "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
     "${NVMTOOL}" "flashregion_3_gbe.bin" copy 0 || { echo "Failed to copy region 0 to region 1" ; return 1; }
     "${NVMTOOL}" "flashregion_3_gbe.bin" setmac "${_mac}" || { echo "Failed to set MAC address" ; return 1; }
     "${IFDTOOL}" -i gbe:flashregion_3_gbe.bin "${DASHARO_ROM}" || { echo "Failed to insert gbe to the binary" ; return 1; }
@@ -351,7 +351,7 @@ dcu_mac_command() {
 
   get_mac() {
     # dump sections
-    "${IFDTOOL}" -x "${DASHARO_ROM}" || { echo "Failed to extract sections" ; return 1; }
+    "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
     "${NVMTOOL}" "flashregion_3_gbe.bin" dump
     echo "Success"
   }
@@ -359,11 +359,6 @@ dcu_mac_command() {
   cleanup() {
     rm -f flashregion*
   }
-
-  if ! "${CBFSTOOL}" "${DASHARO_ROM}" extract -n config -r COREBOOT -f /tmp/cb_config > /dev/null 2> /dev/null; then
-    echo "Failed to extract coreboot configuration from the image"
-    exit 6
-  fi
 
   echo "Will modify ${DASHARO_ROM}"
 
@@ -808,7 +803,7 @@ parse_requirements() {
     deps['ifdtool']="$(command -v ifdtool | head -n1)"
   else
     printf "missing dependency: ifdtool\n" >&2
-    printf "%s\n" "You can build one from source code: https://github.com/Dasharo/dcu#compiling-ifdtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container\n" >&2
+    printf "%s\n" "You can build one from source code: https://github.com/Dasharo/dcu#compiling-nvmtool or use DCU tool in container: https://github.com/Dasharo/dcu?tab=readme-ov-file#dasharo-configuration-container\n" >&2
     exit 1
   fi
 
