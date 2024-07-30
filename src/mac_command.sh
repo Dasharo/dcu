@@ -28,8 +28,8 @@ set_mac() {
   fi
 
   "${IFDTOOL}" -i gbe:flashregion_3_gbe.bin "${DASHARO_ROM}" || { echo "Failed to insert gbe to the binary" ; return 1; }
-  # echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
-  # mv "${DASHARO_ROM}.new" "${DASHARO_ROM}"
+  echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
+  mv "${DASHARO_ROM}.new" "${DASHARO_ROM}"
   echo "Success"
 }
 
