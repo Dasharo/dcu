@@ -160,6 +160,18 @@ CpuThrottlingThreshold		0-255 (Actual supported values may vary)
 > throttling temperature is adjustable from TjMax to TjMax-63. To see what
 > values are implemented in a given build, check the UEFI setup menu.
 
+* Get the MAC address and its checksum:
+
+```bash
+./dcu mac coreboot.rom
+```
+
+* Set the MAC address:
+
+```bash
+./dcu mac coreboot.rom --set "00:11:22:33:44:55"
+```
+
 ## Error codes
 
 * 0 - no error
