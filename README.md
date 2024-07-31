@@ -186,6 +186,9 @@ CpuThrottlingThreshold		0-255 (Actual supported values may vary)
        firmware image has not been booted yet
 * 18 - failed to read value of a configuration variable
 * 20 - configuration variable not yet supported in DCU
+* 21 - provided image is not supported by `mac` subcommand
+* 22 - invalid MAC address format
+* 23 - MAC addresses in the image are invalid
 
 ## Development
 
