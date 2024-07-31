@@ -15,7 +15,7 @@ set_mac() {
   "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
 
   if [[ ! -f "$GBE_FLASHREGION_FILENAME" ]]; then
-    echo "Setting the MAC address inf this binary is currently not supported"
+    echo "Setting the MAC address in this binary is currently not supported"
     return 1
   fi
 
