@@ -11,14 +11,6 @@ GBE_FLASHREGION_FILENAME="flashregion_3_gbe.bin"
 
 set_mac() {
   local _mac="$1"
-
-  "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
-
-  if [[ ! -f "$GBE_FLASHREGION_FILENAME" ]]; then
-    echo "Setting the MAC address in this binary is currently not supported"
-    return 1
-  fi
-
   if "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" copy 0; then
     echo "Copying region 0 to region 1"
   else
@@ -41,9 +33,16 @@ set_mac() {
 
 get_mac() {
   # dump sections
-  "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections" ; return 1; }
   "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" dump
   echo "Success"
+}
+
+init() {
+  "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections"; }
+  if [[ ! -f "$GBE_FLASHREGION_FILENAME" ]]; then
+    echo "Managing the MAC address in this binary is currently not supported"
+    return 1
+  fi
 }
 
 cleanup() {
@@ -51,6 +50,8 @@ cleanup() {
 }
 
 echo "Using ${DASHARO_ROM}"
+
+init
 
 if [ -n "${MAC}" ]; then
   set_mac "${MAC}"
