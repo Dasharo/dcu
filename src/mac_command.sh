@@ -24,8 +24,8 @@ set_mac() {
     fi
   fi
 
-  "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" setmac "${_mac}" || { echo "Failed to write MAC" ; return 22; }
-  "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_FILENAME" "${DASHARO_ROM}" || { echo "Failed to insert gbe to the binary" ; return 21; }
+  "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" setmac "${_mac}" &> /dev/null || { echo "Failed to write MAC" ; return 22; }
+  "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_FILENAME" "${DASHARO_ROM}" &> /dev/null || { echo "Failed to insert gbe to the binary" ; return 21; }
   echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
   mv "${DASHARO_ROM}.new" "${DASHARO_ROM}" -f
   echo "Success"
@@ -38,7 +38,7 @@ get_mac() {
 }
 
 init() {
-  "${IFDTOOL}" -x "${DASHARO_ROM}" > /dev/null 2>&1 || { echo "Failed to extract sections"; }
+  "${IFDTOOL}" -x "${DASHARO_ROM}" &> /dev/null || { echo "Failed to extract sections"; }
   if [[ ! -f "$GBE_FLASHREGION_FILENAME" ]]; then
     echo "Managing the MAC address in this binary is currently not supported"
     return 21
