@@ -6,7 +6,7 @@ source approvals.bash
 source test-data.sh
 
 # Update me
-cli=../dcu
+cli=../dcuc
 
 echo "Setting up test data..."
 download_test_data
@@ -78,17 +78,17 @@ describe "Get MeMode (expecting Enabled)"
   approve "$cli variable ${DATA_WORK_DIR}/MeModeEnabled_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
 
 cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom
-describe "Set MeMode to DisabledSoft"
-  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value DisabledSoft"
+describe "Set MeMode to Disabled (Soft)"
+approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value \"Disabled (Soft)\""
 
-describe "Get MeMode (expecting DisabledSoft)"
+describe "Get MeMode (expecting Disabled (Soft))"
   approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledSoft_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
 
 cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom
-describe "Set MeMode to DisabledHAP"
-  approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value DisabledHAP"
+describe "Set MeMode to Disabled (HAP)"
+approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --set MeMode --value \"Disabled (HAP)\""
 
-describe "Get MeMode (expecting DisabledHAP)"
+describe "Get MeMode (expecting Disabled (HAP))"
   approve "$cli variable ${DATA_WORK_DIR}/MeModeDisabledHAP_novacustom_nv4x_adl_v1.6.0.rom --get MeMode"
 
 describe "Set MeMode to InvalidMode"

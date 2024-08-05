@@ -1,4 +1,0 @@
-No firmware volume header present
-No valid firmware volume was found
-Failed to find variable store in "./data/work/novacustom_nv4x_adl_v1.6.0.rom"
-Variable store was not initialized yet. You need set some variable first via --set option. (error code: 1)
