@@ -2,6 +2,36 @@
 
 # Dasharo Configuration Utility Container
 
+SCRIPT_DIR=$(dirname "$(readlink -f ${BASH_SOURCE[0]})")
+
 DOCKER_IMAGE="ghcr.io/dasharo/dasharo-sdk:v1.5.0"
 
-docker run -t --rm -v "$(pwd):/app" -w /app $DOCKER_IMAGE ./dcu "$@"
+# Initialize an array to store Docker arguments
+DOCKER_ARGS=()
+
+# Initialize an array to store the command to be executed in the container
+COMMAND_ARGS=()
+
+# Function to add a bind mount for a file
+add_bind_mount() {
+    local FILE_PATH=$1
+    local ABS_PATH=""
+    local DIR_PATH=""
+    ABS_PATH=$(realpath "$FILE_PATH")
+    DIR_PATH=$(dirname "$ABS_PATH")
+    DOCKER_ARGS+=("-v" "$DIR_PATH:$DIR_PATH")
+    echo "$ABS_PATH"
+}
+
+# Iterate over the command line arguments
+for ARG in "$@"; do
+    if [[ -f "$ARG" ]]; then
+        # Convert the file path to an absolute path and add a bind mount
+        ABS_PATH=$(add_bind_mount "$ARG")
+        COMMAND_ARGS+=("$ABS_PATH")
+    else
+        COMMAND_ARGS+=("$ARG")
+    fi
+done
+
+docker run -t --rm -v "${SCRIPT_DIR}:${SCRIPT_DIR}" "${DOCKER_ARGS[@]}" -w "${SCRIPT_DIR}" $DOCKER_IMAGE ./dcu "${COMMAND_ARGS[@]}"
