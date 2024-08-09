@@ -8,7 +8,7 @@ DASHARO_ROM="${args[dasharo_rom_file]}"
 LOGO_FILE="${args[--logo]}"
 
 if [ ! -f "${LOGO_FILE}" ]; then
-  echo "Logo file not found or invalid path."
+  echo "Logo file not found or invalid path: ${LOGO_FILE}"
   exit 12
 fi
 
