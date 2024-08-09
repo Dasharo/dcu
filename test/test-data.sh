@@ -33,6 +33,10 @@ download_test_data() {
 
   # PDF (unsupported bootsplash format)
   dl_test_file dummy.pdf https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf
+
+  dl_test_file novacustom_v540tu_mtl_v0.9.0.rom http://dl.3mdeb.com/open-source-firmware/Dasharo/novacustom_v54x_mtl/v0.9.0/novacustom_v54x_mtl_v0.9.0.rom
+  dl_test_file gbe.bin https://raw.githubusercontent.com/Dasharo/dasharo-blobs/mtl-h/novacustom/v5x0tu/gbe.bin
+  ifdtool -i gbe:${DATA_DL_DIR}/gbe.bin ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0.rom -O ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom &> /dev/null
 }
 
 refresh_test_data() {
