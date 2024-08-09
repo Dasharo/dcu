@@ -7,25 +7,25 @@
 DASHARO_ROM="${args[dasharo_rom_file]}"
 MAC="${args[--set]}"
 GBE_FLASHREGION_FILENAME="flashregion_3_gbe.bin"
-
-
+GBE_FLASHREGION_PATH=$GBE_FLASHREGION_FILENAME
 set_mac() {
   local _mac="$1"
-  if "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" copy 0; then
+  if "${NVMTOOL}" "$GBE_FLASHREGION_PATH" copy 0; then
     echo "Copying region 0 to region 1"
   else
     echo "Failed to copy region 0 to region 1"
-    if "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" copy 1; then
+    if "${NVMTOOL}" "$GBE_FLASHREGION_PATH" copy 1; then
       echo "Copying region 1 to region 0"
     else
       echo "Failed to copy region 1 to region 0"
       echo "Both regions are invalid, aborting"
+      cleanup
       return 23
     fi
   fi
 
-  "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" setmac "${_mac}" &> /dev/null || { echo "Failed to write MAC" ; return 22; }
-  "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_FILENAME" "${DASHARO_ROM}" &> /dev/null || { echo "Failed to insert gbe to the binary" ; return 21; }
+  "${NVMTOOL}" "$GBE_FLASHREGION_PATH" setmac "${_mac}" 1> /dev/null || { cleanup; return 22; }
+  "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_PATH" "${DASHARO_ROM}" 1> /dev/null || { cleanup; return 21; }
   echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
   mv "${DASHARO_ROM}.new" "${DASHARO_ROM}" -f
   echo "Success"
@@ -33,14 +33,20 @@ set_mac() {
 
 get_mac() {
   # dump sections
-  "${NVMTOOL}" "$GBE_FLASHREGION_FILENAME" dump
+  "${NVMTOOL}" "$GBE_FLASHREGION_PATH" dump
   echo "Success"
 }
 
 init() {
-  "${IFDTOOL}" -x "${DASHARO_ROM}" &> /dev/null || { echo "Failed to extract sections"; }
-  if [[ ! -f "$GBE_FLASHREGION_FILENAME" ]]; then
+  if [[ ! -f "${DASHARO_ROM}" ]]; then
+    echo "Error, file does not exist: ${DASHARO_ROM}"
+    cleanup
+    return 1
+  fi
+  "${IFDTOOL}" -x "${DASHARO_ROM}" &> /dev/null
+  if [[ ! -f "$GBE_FLASHREGION_PATH" ]]; then
     echo "Managing the MAC address in this binary is currently not supported"
+    cleanup
     return 21
   fi
 }
@@ -48,7 +54,8 @@ init() {
 cleanup() {
   rm -f flashregion*
 }
-
+DASHARO_ROM=$(realpath -- "$DASHARO_ROM")
+GBE_FLASHREGION_PATH=$(realpath -- "$GBE_FLASHREGION_PATH")
 echo "Using ${DASHARO_ROM}"
 
 init
