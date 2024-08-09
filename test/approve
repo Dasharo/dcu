@@ -113,3 +113,21 @@ describe "Set FanCurveMode to InvalidMode"
 
 describe "Set unsupported variable"
   approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirectionInvalid --value Enabled"
+
+describe "Set valid MAC"
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 12:34:56:78:9A:BC"
+
+describe "Get MAC (should be set by previous test)"
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom"
+
+describe "Set invalid MAC"
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 00:00:00:00:00:00"
+
+describe "Get MAC Bad checksums"
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0.rom"
+
+describe "Set MAC Bad checksums"
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0.rom --set 12:34:56:78:9A:BC"
+
+describe "MAC Unsupported binary"
+  approve "$cli mac ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom"
