@@ -45,3 +45,5 @@ repos:
     -   id: shellcheck
         args: ["--severity=warning"]
         exclude: "^src/.*$"
+files: |
+  ^test/approvals/
