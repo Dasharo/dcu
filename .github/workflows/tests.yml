@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: build
+        uses: addnab/docker-run-action@v3
+        with:
+          image: 	dannyben/bashly
+          options: --rm -v ${{ github.workspace }}:/app
+          run: bashly generate
+      - name: tests
+        uses: addnab/docker-run-action@v3
+        with:
+          image: ghcr.io/dasharo/dasharo-sdk:v1.5.0
+          options: --rm -v ${{ github.workspace }}:/dcu
+          run: |
+            cd dcu
+            test/approve-ci

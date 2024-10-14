@@ -1,0 +1,25 @@
+dcu - Dasharo Configuration Utility
+
+Usage:
+  dcu COMMAND
+  dcu [COMMAND] --help | -h
+  dcu --version | -v
+
+Commands:
+  mac        Get/set MAC address in a firmware image
+  smbios     Edit SMBIOS data in a firmware image
+  logo       Insert custom logo boot splash into firmware image
+  variable   Edit Dasharo configuration variables
+
+Options:
+  --help, -h
+    Show this help
+
+  --version, -v
+    Show version number
+
+Examples:
+  dcu setmac coreboot.rom 12:34:45:56:78:9A
+  dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
+  dcu logo coreboot.rom -l bootsplash.bmp
+  dcu variable coreboot.rom --get EnableWifiBt

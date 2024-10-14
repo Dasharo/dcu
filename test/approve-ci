@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Run this from the root directory
+./test/config-ci
+CI=1 ./test/approve

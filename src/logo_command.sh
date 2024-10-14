@@ -24,7 +24,7 @@ if ! "${CBFSTOOL}" "${DASHARO_ROM}" layout -w | grep -q "BOOTSPLASH"; then
 fi
 
 echo "Setting ${LOGO_FILE} as custom logo"
-convert -background None ${LOGO_FILE} BMP3:/tmp/logo.bmp
+convert -background None ${LOGO_FILE} BMP3:/tmp/logo.bmp &> /dev/null
 # We do not care if this one fails. It can fail if serial_number is not
 # already, there, which is fine.
 "${CBFSTOOL}" "${DASHARO_ROM}" remove -n logo.bmp -r BOOTSPLASH > /dev/null 2> /dev/null || true

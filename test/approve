@@ -5,11 +5,13 @@ cd ./test || exit
 source approvals.bash
 source test-data.sh
 
-# Update me
 cli=../dcuc
 
 echo "Setting up test data..."
-download_test_data
+if [[ ! -v CI ]]; then
+  download_test_data
+fi
+
 refresh_test_data
 
 export ESCAPED_PWD="${PWD//\//\\/}"
@@ -131,13 +133,13 @@ describe "Set valid MAC"
   allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 12:34:56:78:9A:BC"
 
-describe "Get MAC (should be set by previous test)"
-  allow_diff $ESCAPED_PWD
-  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom"
-
 describe "Set invalid MAC"
   allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 00:00:00:00:00:00"
+
+describe "Get MAC (should be set by 'Set valid MAC' and not set by 'Set invalid MAC')"
+  allow_diff $ESCAPED_PWD
+  approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom"
 
 describe "Get MAC Bad checksums"
   allow_diff $ESCAPED_PWD

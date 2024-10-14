@@ -354,8 +354,8 @@ dcu_mac_command() {
       fi
     fi
 
-    "${NVMTOOL}" "$GBE_FLASHREGION_PATH" setmac "${_mac}" 1> /dev/null || { cleanup; return 23; }
-    "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_PATH" "${DASHARO_ROM}" 1> /dev/null || { cleanup; return 23; }
+    "${NVMTOOL}" "$GBE_FLASHREGION_PATH" setmac "${_mac}" 1> /dev/null || { cleanup; return 22; }
+    "${IFDTOOL}" -i gbe:"$GBE_FLASHREGION_PATH" "${DASHARO_ROM}" 1> /dev/null || { cleanup; return 21; }
     echo "Moving ${DASHARO_ROM}.new to ${DASHARO_ROM}"
     mv "${DASHARO_ROM}.new" "${DASHARO_ROM}" -f
     echo "Success"
@@ -364,7 +364,7 @@ dcu_mac_command() {
   get_mac() {
     # dump sections
     "${NVMTOOL}" "$GBE_FLASHREGION_PATH" dump
-
+    echo "Success"
   }
 
   init() {
@@ -518,7 +518,7 @@ dcu_logo_command() {
   fi
 
   echo "Setting ${LOGO_FILE} as custom logo"
-  convert -background None ${LOGO_FILE} BMP3:/tmp/logo.bmp
+  convert -background None ${LOGO_FILE} BMP3:/tmp/logo.bmp &> /dev/null
   # We do not care if this one fails. It can fail if serial_number is not
   # already, there, which is fine.
   "${CBFSTOOL}" "${DASHARO_ROM}" remove -n logo.bmp -r BOOTSPLASH > /dev/null 2> /dev/null || true

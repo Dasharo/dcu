@@ -32,7 +32,12 @@ approve() {
     return
   fi
 
+<<<<<<< HEAD
   if [[ "$(printf "%b" "$actual")" = "$(printf "%b" "$expected")" ]]; then
+=======
+  $diff_cmd <(printf "%b" "$expected\n") <(printf "%b" "$actual\n") &> /dev/null && true
+  if [[ $? == 0 ]]; then
+>>>>>>> dd9111f1f354 (ci fixes)
     pass "$cmd"
   else
     printf -- "$changed_diff_string\n" "$cmd"
@@ -166,7 +171,7 @@ changed_diff_string="────┤ $(blue changed): $(bold %s) ├────
 approval_string="[A]pprove? "
 
 if diff --help | grep -- --color >/dev/null 2>&1; then
-  diff_cmd="diff --unified --color=always"
+  diff_cmd="diff --unified --strip-trailing-cr -wB --color=always"
 else
-  diff_cmd="diff --unified"
+  diff_cmd="diff --unified --strip-trailing-cr -wB"
 fi

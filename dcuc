@@ -34,4 +34,8 @@ for ARG in "$@"; do
     fi
 done
 
-docker run -t --rm -v "${SCRIPT_DIR}:${SCRIPT_DIR}" "${DOCKER_ARGS[@]}" -w "${SCRIPT_DIR}" $DOCKER_IMAGE ./dcu "${COMMAND_ARGS[@]}"
+if [[ -v CI ]]; then
+    ../dcu "${COMMAND_ARGS[@]}"
+else
+    docker run -t --rm -v "${SCRIPT_DIR}:${SCRIPT_DIR}" "${DOCKER_ARGS[@]}" -w "${SCRIPT_DIR}" $DOCKER_IMAGE ./dcu "${COMMAND_ARGS[@]}"
+fi
