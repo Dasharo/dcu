@@ -6,5 +6,5 @@ and is about to be initialized. This situation is normal
 for a release image, as the variable store is usually
 initialized on the first boot of the platform.
 
-Successfully created variable store in "/home/macpijan/projects/github/dasharo/dcu/test/data/work/novacustom_nv4x_adl_v1.6.0.rom"
+Successfully created variable store in "*/data/work/novacustom_nv4x_adl_v1.6.0.rom"
 Successfully set variable SerialRedirection in the variable store.

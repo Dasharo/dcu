@@ -12,45 +12,58 @@ echo "Setting up test data..."
 download_test_data
 refresh_test_data
 
+export ESCAPED_PWD="${PWD//\//\\/}"
+
 describe "help message"
   approve "$cli --help"
 
 describe "Try to replace logo in binary supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ${DATA_WORK_DIR}/bootsplash.bmp"
 
 describe "Try to replace logo in binary NOT supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_kbl_v1.0.14.rom -l ${DATA_WORK_DIR}/bootsplash.bmp"
 
 describe "Try to replace serial in binary supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051"
 
 describe "Try to replace serial in binary NOT supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -s D07229051"
 
 describe "Try to replace UUID in binary supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace UUID in binary NOT supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace both serial and UUID in binary supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace both serial and UUID in binary NOT supporting that"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom -s D07229051 -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4"
 
 describe "Try to replace logo using unsupported format (PDF)"
   approve "$cli logo ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -l ${DATA_WORK_DIR}/dummy.pdf"
 
 describe "Try to replace UUID using incorrect format"
+  allow_diff $ESCAPED_PWD
   approve "$cli smbios ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom  -u dead-beef"
 
 refresh_test_data
 
 describe "Get variable from uninitialized store"
+  allow_diff $ESCAPED_PWD
   approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --get SerialRedirection"
 
 describe "Initialize variable store in a release binary"
+  allow_diff $ESCAPED_PWD
   approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirection --value Enabled"
 
 cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SerialRedirectionDisabled_novacustom_nv4x_adl_v1.6.0.rom
@@ -115,19 +128,25 @@ describe "Set unsupported variable"
   approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirectionInvalid --value Enabled"
 
 describe "Set valid MAC"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 12:34:56:78:9A:BC"
 
 describe "Get MAC (should be set by previous test)"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom"
 
 describe "Set invalid MAC"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 00:00:00:00:00:00"
 
 describe "Get MAC Bad checksums"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0.rom"
 
 describe "Set MAC Bad checksums"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0.rom --set 12:34:56:78:9A:BC"
 
 describe "MAC Unsupported binary"
+  allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/protectli_vault_cml_v1.2.0-rc1_vp46xx.rom"
