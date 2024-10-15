@@ -163,6 +163,9 @@ set_variable()
     fi
     set_value=${i}
     set_type="uint8"
+  elif [[ $(typeof ${SET}) == "unknown" ]]; then
+    echo "Variable \"${SET}\" is not supported by the DCU tool yet".
+    exit 20
   else
     # All other types: Pass the type and value directly.
     set_value=${VALUE}
