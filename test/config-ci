@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Run this from the root directory
+
+cd ./test || exit
+source test-data.sh
+
+download_test_data

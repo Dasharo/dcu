@@ -54,7 +54,7 @@ valueof()
 {
   case `typeof $1` in
     enum_bool)
-      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t bool)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t bool)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "false" ]; then
         echo "Disabled"
@@ -66,7 +66,7 @@ valueof()
       fi
       ;;
     enum_memode)
-      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "0" ]; then
         echo "Enabled"
@@ -80,7 +80,7 @@ valueof()
       fi
       ;;
     enum_fancurve)
-      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "0" ]; then
         echo "Silent"
@@ -92,7 +92,7 @@ valueof()
       fi
       ;;
     uint8)
-      _result="$(${SMMSTORETOOL} ${DASHARO_ROM} get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       echo ${_result}
       ;;
@@ -163,20 +163,23 @@ set_variable()
     fi
     set_value=${i}
     set_type="uint8"
+  elif [[ $(typeof ${SET}) == "unknown" ]]; then
+    echo "Variable \"${SET}\" is not supported by the DCU tool yet".
+    exit 20
   else
     # All other types: Pass the type and value directly.
     set_value=${VALUE}
     set_type=$(typeof ${SET})
   fi
 
-  ${SMMSTORETOOL} ${DASHARO_ROM} set -g dasharo -n ${SET} -t ${set_type} -v ${set_value}
+  ${SMMSTORETOOL} "${DASHARO_ROM}" set -g dasharo -n ${SET} -t ${set_type} -v ${set_value}
   echo "Successfully set variable ${SET} in the variable store."
 }
 
 list_variables()
 {
   echo "Settings in ${DASHARO_ROM}:"
-  variables=$(${SMMSTORETOOL} ${DASHARO_ROM} list | grep "dasharo" | sed 's/.*://; s/(.*//')
+  variables=$(${SMMSTORETOOL} "${DASHARO_ROM}" list | grep "dasharo" | sed 's/.*://; s/(.*//')
   tabs 30
   echo -e "NAME\tVALUE\tACCEPTED VALUES"
   for var in $variables; do
