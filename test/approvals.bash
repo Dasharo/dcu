@@ -32,12 +32,8 @@ approve() {
     return
   fi
 
-<<<<<<< HEAD
-  if [[ "$(printf "%b" "$actual")" = "$(printf "%b" "$expected")" ]]; then
-=======
   $diff_cmd <(printf "%b" "$expected\n") <(printf "%b" "$actual\n") &> /dev/null && true
   if [[ $? == 0 ]]; then
->>>>>>> dd9111f1f354 (ci fixes)
     pass "$cmd"
   else
     printf -- "$changed_diff_string\n" "$cmd"
