@@ -363,7 +363,11 @@ dcu_mac_command() {
 
   get_mac() {
     # dump sections
-    "${NVMTOOL}" "$GBE_FLASHREGION_PATH" dump
+    dump=$("${NVMTOOL}" "$GBE_FLASHREGION_PATH" "dump" 2>&1 || true)
+    bad=$(printf "%s" "$dump" | grep "BAD checksum" 2>&1 || true)
+    dump=$(echo "$dump" | sed "/BAD checksum in part 0/d" | sed "/BAD checksum in part 1/d")
+    echo "$bad"
+    echo "$dump"
     echo "Success"
   }
 

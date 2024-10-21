@@ -1,4 +1,5 @@
 Using */data/work/novacustom_v540tu_mtl_v0.9.0_gbe.rom
+
 Part 0:
 MAC: 12:34:56:78:9a:bc
 0000000 3412 7856 bc9a 0801 ffff 1014 0001 0084 
@@ -19,3 +20,4 @@ MAC: 12:34:56:78:9a:bc
 0000050 0000 0000 0007 a000 0020 0000 0e00 0000 
 0000060 0100 4000 1228 4007 ffff ffff ffff ffff 
 0000070 ffff ffff ffff ffff ffff 0200 ffff ba41 
+Success
