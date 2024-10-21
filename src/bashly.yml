@@ -21,7 +21,7 @@ commands:
         help: Set mac address
     examples:
       - dcu mac coreboot.rom --set AB:CD:EF:01:23:45
-      - dcu mac coreboot.rom --get
+      - dcu mac coreboot.rom
   - name: smbios
     alias: s
     help: Edit SMBIOS data in a firmware image
