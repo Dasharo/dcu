@@ -95,6 +95,11 @@ git clone https://github.com/Dasharo/dcu.git
 
 Simply use `dcuc` instead od `dcu`, and follow the section below.
 
+NOTE: to avoid errors when using container version or tests that use dcu,
+please, always provide all file arguments using just the file name,
+coreboot.rom instead of ./coreboot.rom or absolute path /path/to/coreboot.rom.
+This is a [known issue](https://github.com/Dasharo/dcu/issues/17).
+
 ### Standalone
 
 The script will save the UUID and Serial Number to the COREBOOT region and the
