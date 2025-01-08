@@ -15,20 +15,18 @@ COMMAND_ARGS=()
 # Function to add a bind mount for a file
 add_bind_mount() {
     local FILE_PATH=$1
-    local ABS_PATH=""
-    local DIR_PATH=""
+    local ABS_PATH
     ABS_PATH=$(realpath "$FILE_PATH")
-    DIR_PATH=$(dirname "$ABS_PATH")
-    DOCKER_ARGS+=("-v" "$DIR_PATH:$DIR_PATH")
-    echo "$ABS_PATH"
+    FILENAME="$(basename "$ABS_PATH")"
+    DOCKER_ARGS+=( '-v' "$ABS_PATH":/"${FILENAME}" )
 }
 
 # Iterate over the command line arguments
 for ARG in "$@"; do
     if [[ -f "$ARG" ]]; then
         # Convert the file path to an absolute path and add a bind mount
-        ABS_PATH=$(add_bind_mount "$ARG")
-        COMMAND_ARGS+=("$ABS_PATH")
+        add_bind_mount "$ARG"
+        COMMAND_ARGS+=("/$FILENAME")
     else
         COMMAND_ARGS+=("$ARG")
     fi
