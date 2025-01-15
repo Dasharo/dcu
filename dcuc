@@ -24,9 +24,13 @@ add_bind_mount() {
 # Iterate over the command line arguments
 for ARG in "$@"; do
     if [[ -f "$ARG" ]]; then
-        # Convert the file path to an absolute path and add a bind mount
-        add_bind_mount "$ARG"
-        COMMAND_ARGS+=("/$FILENAME")
+        if [[ -v CI ]]; then
+            COMMAND_ARGS+=("$(realpath "$ARG")")
+        else
+            # Convert the file path to an absolute path and add a bind mount
+            add_bind_mount "$ARG"
+            COMMAND_ARGS+=("/$FILENAME")
+        fi
     else
         COMMAND_ARGS+=("$ARG")
     fi
