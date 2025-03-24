@@ -15,7 +15,7 @@ LIST_SUPPORTED="${args[--list-supported]}"
 supported_variables=$(echo "LockBios NetworkBoot UsbDriverStack SmmBwp"\
                     "Ps2Controller BootManagerEnabled PCIeResizeableBarsEnabled"\
                     "EnableCamera EnableWifiBt SerialRedirection SerialRedirection2"\
-                    "MeMode FanCurveOption CpuThrottlingThreshold")
+                    "MeMode FanCurveOption CpuThrottlingThreshold HybridGraphicsMode")
 
 typeof()
 {
@@ -43,6 +43,9 @@ typeof()
       ;;
     CpuThrottlingThreshold)
       echo "uint8"
+      ;;
+    HybridGraphicsMode)
+      echo "enum_hybridgraphics"
       ;;
     *)
       echo "unknown"
@@ -91,6 +94,16 @@ valueof()
         exit 18
       fi
       ;;
+      enum_hybridgraphics)
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      case $_result in
+        0) echo "iGPU Only";;
+        1) echo "NVIDIA Optimus";;
+        2) echo "dGPU Only";;
+        *) echo "Error!"; exit 18;;
+      esac
+      ;;
     uint8)
       _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
@@ -114,6 +127,9 @@ acceptedvaluesfor()
       ;;
     enum_fancurve)
       echo "Silent / Performance"
+      ;;
+    enum_hybridgraphics)
+      echo "iGPU Only / NVIDIA Optimus / dGPU Only"
       ;;
     uint8)
       echo "0-255 (Actual supported values may vary)"
