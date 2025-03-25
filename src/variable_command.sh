@@ -94,7 +94,7 @@ valueof()
         exit 18
       fi
       ;;
-      enum_dgpuenabled)
+    enum_dgpuenabled)
       _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       case $_result in
