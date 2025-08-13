@@ -22,7 +22,7 @@ tasks:
     cmds:
       - task: docker:run
         vars:
-          IMAGE: ghcr.io/dasharo/dasharo-sdk:v1.5.0
+          IMAGE: ghcr.io/dasharo/dasharo-sdk:v1.9.1
           VOLUMES: "{{.PWD}}:/dcu"
           WORKDIR: /dcu
           COMMAND: test/approve-ci
