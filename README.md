@@ -105,6 +105,12 @@ This is a [known issue](https://github.com/Dasharo/dcu/issues/17).
 The script will save the UUID and Serial Number to the COREBOOT region and the
 logo to BOOTSPLASH region.
 
+CAUTION: Using `smbios` subcommand to modify SMBIOS data in a firmware image is
+allowed only on images without Boot Guard provisioning. Official Dasharo images
+containing Boot Guard provisioning are marked with `_btg_provisioned` image file
+name portion. Flashing `_btg_provisioned` image with modified SMBIOS data will
+make the platform unusable & will require an external flashing recovery procedure.
+
 NOTE: Not all Dasharo platform support such customizations.
 
 NOTE: if you update the firmware by rewriting whole BIOS region, the data will
