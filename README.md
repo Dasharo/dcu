@@ -106,6 +106,7 @@ The script will save the UUID and Serial Number to the COREBOOT region and the
 logo to BOOTSPLASH region.
 
 ???+ warning
+
     CAUTION: Using `smbios` subcommand to modify SMBIOS data in a firmware image is
     allowed only on images without Boot Guard provisioning. Official Dasharo images
     containing Boot Guard provisioning are marked with `_btg_provisioned` image file
