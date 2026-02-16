@@ -1,0 +1,28 @@
+version: '3'
+
+includes:
+  docker:
+    taskfile: https://raw.githubusercontent.com/3mdeb/taskfiles/fe705d9f1438e9da2ed5a6f1622bc1ba6f1d9f8e/docker.yml
+    checksum: e7414f0ebce7fcaab587d1bf5387c4f32bee952bf97de9c30b9075c609608b54
+
+tasks:
+  build:
+    desc: Generate CLI using bashly
+    cmds:
+      - task: docker:run
+        vars:
+          IMAGE: dannyben/bashly:1.3.6
+          VOLUMES: "{{.PWD}}:/app"
+          WORKDIR: /app
+          COMMAND: bashly generate
+
+  test:
+    desc: Run approval tests
+    deps: [build]
+    cmds:
+      - task: docker:run
+        vars:
+          IMAGE: ghcr.io/dasharo/dasharo-sdk:v1.5.0
+          VOLUMES: "{{.PWD}}:/dcu"
+          WORKDIR: /dcu
+          COMMAND: test/approve-ci
