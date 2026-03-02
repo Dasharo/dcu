@@ -184,6 +184,16 @@ CpuThrottlingThreshold		0-255 (Actual supported values may vary)
 ./dcu mac coreboot.rom --set "00:11:22:33:44:55"
 ```
 
+Changing logo on a fused platform requires adding more arguments to flashrom commands: 
+- when obtaining the binary to be modifed, read only bios region
+```
+    flashrom -p internal --ifd -i bios -r <dasharo_image>
+```
+- after changing the logo, write only bios region + add noverify-all
+```
+    flashrom -p internal --ifd -i bios -w <dasharo_image> --noverify-all
+```
+
 ## Error codes
 
 * 0 - no error
