@@ -38,10 +38,19 @@ download_test_data() {
   # - mac
   dl_test_file novacustom_v540tu_mtl_v0.9.0.rom http://dl.3mdeb.com/open-source-firmware/Dasharo/novacustom_v54x_mtl/v0.9.0/novacustom_v54x_mtl_v0.9.0.rom
   dl_test_file gbe.bin https://raw.githubusercontent.com/Dasharo/dasharo-blobs/main/novacustom/v5x0tu/gbe.bin
-  ifdtool -i gbe:${DATA_DL_DIR}/gbe.bin ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0.rom -O ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom &> /dev/null
+
+  # Only run ifdtool if the output file doesn't exist and ifdtool is available
+  if [ ! -f "${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom" ]; then
+    if command -v ifdtool &> /dev/null; then
+      ifdtool -i gbe:${DATA_DL_DIR}/gbe.bin ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0.rom -O ${DATA_DL_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom &> /dev/null
+    else
+      echo "Warning: ifdtool not found, skipping novacustom_v540tu_mtl_v0.9.0_gbe.rom generation" >&2
+      echo "The file may have been generated in a previous run or needs to be created manually" >&2
+    fi
+  fi
 }
 
 refresh_test_data() {
   mkdir -p "${DATA_WORK_DIR}"
-  cp ${DATA_DL_DIR}/* ${DATA_WORK_DIR}
+  cp -f ${DATA_DL_DIR}/* ${DATA_WORK_DIR} 2>/dev/null || true
 }

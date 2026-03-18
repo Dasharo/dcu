@@ -129,6 +129,187 @@ describe "Set FanCurveMode to InvalidMode"
 describe "Set unsupported variable"
   approve "$cli variable ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom --set SerialRedirectionInvalid --value Enabled"
 
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/UsbMassStorageEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set UsbMassStorage to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbMassStorageEnabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbMassStorage --value Enabled"
+
+describe "Get UsbMassStorage (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbMassStorageEnabled_novacustom_nv4x_adl_v1.6.0.rom --get UsbMassStorage"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/UsbMassStorageDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set UsbMassStorage to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbMassStorageDisabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbMassStorage --value Disabled"
+
+describe "Get UsbMassStorage (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbMassStorageDisabled_novacustom_nv4x_adl_v1.6.0.rom --get UsbMassStorage"
+
+describe "Set UsbMassStorage to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbMassStorageEnabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbMassStorage --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/QuietBootEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set QuietBoot to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/QuietBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --set QuietBoot --value Enabled"
+
+describe "Get QuietBoot (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/QuietBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --get QuietBoot"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/QuietBootDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set QuietBoot to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/QuietBootDisabled_novacustom_nv4x_adl_v1.6.0.rom --set QuietBoot --value Disabled"
+
+describe "Get QuietBoot (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/QuietBootDisabled_novacustom_nv4x_adl_v1.6.0.rom --get QuietBoot"
+
+describe "Set QuietBoot to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/QuietBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --set QuietBoot --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/FastBootEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set FastBoot to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/FastBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --set FastBoot --value Enabled"
+
+describe "Get FastBoot (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/FastBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --get FastBoot"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/FastBootDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set FastBoot to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/FastBootDisabled_novacustom_nv4x_adl_v1.6.0.rom --set FastBoot --value Disabled"
+
+describe "Get FastBoot (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/FastBootDisabled_novacustom_nv4x_adl_v1.6.0.rom --get FastBoot"
+
+describe "Set FastBoot to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/FastBootEnabled_novacustom_nv4x_adl_v1.6.0.rom --set FastBoot --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/UsbPortPowerEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set UsbPortPower to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbPortPowerEnabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbPortPower --value Enabled"
+
+describe "Get UsbPortPower (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbPortPowerEnabled_novacustom_nv4x_adl_v1.6.0.rom --get UsbPortPower"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/UsbPortPowerDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set UsbPortPower to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbPortPowerDisabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbPortPower --value Disabled"
+
+describe "Get UsbPortPower (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbPortPowerDisabled_novacustom_nv4x_adl_v1.6.0.rom --get UsbPortPower"
+
+describe "Set UsbPortPower to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/UsbPortPowerEnabled_novacustom_nv4x_adl_v1.6.0.rom --set UsbPortPower --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/DescriptorWriteableEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set DescriptorWriteable to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/DescriptorWriteableEnabled_novacustom_nv4x_adl_v1.6.0.rom --set DescriptorWriteable --value Enabled"
+
+describe "Get DescriptorWriteable (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/DescriptorWriteableEnabled_novacustom_nv4x_adl_v1.6.0.rom --get DescriptorWriteable"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/DescriptorWriteableDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set DescriptorWriteable to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/DescriptorWriteableDisabled_novacustom_nv4x_adl_v1.6.0.rom --set DescriptorWriteable --value Disabled"
+
+describe "Get DescriptorWriteable (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/DescriptorWriteableDisabled_novacustom_nv4x_adl_v1.6.0.rom --get DescriptorWriteable"
+
+describe "Set DescriptorWriteable to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/DescriptorWriteableEnabled_novacustom_nv4x_adl_v1.6.0.rom --set DescriptorWriteable --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/DGPUStateiGPUOnly_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set DGPUState to iGPU Only"
+approve "$cli variable ${DATA_WORK_DIR}/DGPUStateiGPUOnly_novacustom_nv4x_adl_v1.6.0.rom --set DGPUState --value \"iGPU Only\""
+
+describe "Get DGPUState (expecting iGPU Only)"
+  approve "$cli variable ${DATA_WORK_DIR}/DGPUStateiGPUOnly_novacustom_nv4x_adl_v1.6.0.rom --get DGPUState"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/DGPUStateNVIDIAOptimus_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set DGPUState to NVIDIA Optimus"
+approve "$cli variable ${DATA_WORK_DIR}/DGPUStateNVIDIAOptimus_novacustom_nv4x_adl_v1.6.0.rom --set DGPUState --value \"NVIDIA Optimus\""
+
+describe "Get DGPUState (expecting NVIDIA Optimus)"
+  approve "$cli variable ${DATA_WORK_DIR}/DGPUStateNVIDIAOptimus_novacustom_nv4x_adl_v1.6.0.rom --get DGPUState"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/DGPUStatedGPUOnly_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set DGPUState to dGPU Only"
+approve "$cli variable ${DATA_WORK_DIR}/DGPUStatedGPUOnly_novacustom_nv4x_adl_v1.6.0.rom --set DGPUState --value \"dGPU Only\""
+
+describe "Get DGPUState (expecting dGPU Only)"
+  approve "$cli variable ${DATA_WORK_DIR}/DGPUStatedGPUOnly_novacustom_nv4x_adl_v1.6.0.rom --get DGPUState"
+
+describe "Set DGPUState to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/DGPUStateiGPUOnly_novacustom_nv4x_adl_v1.6.0.rom --set DGPUState --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SecureBootEnableEnabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set SecureBootEnable to Enabled"
+  approve "$cli variable ${DATA_WORK_DIR}/SecureBootEnableEnabled_novacustom_nv4x_adl_v1.6.0.rom --set SecureBootEnable --value Enabled"
+
+describe "Get SecureBootEnable (expecting Enabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/SecureBootEnableEnabled_novacustom_nv4x_adl_v1.6.0.rom --get SecureBootEnable"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SecureBootEnableDisabled_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set SecureBootEnable to Disabled"
+  approve "$cli variable ${DATA_WORK_DIR}/SecureBootEnableDisabled_novacustom_nv4x_adl_v1.6.0.rom --set SecureBootEnable --value Disabled"
+
+describe "Get SecureBootEnable (expecting Disabled)"
+  approve "$cli variable ${DATA_WORK_DIR}/SecureBootEnableDisabled_novacustom_nv4x_adl_v1.6.0.rom --get SecureBootEnable"
+
+describe "Set SecureBootEnable to InvalidValue"
+  approve "$cli variable ${DATA_WORK_DIR}/SecureBootEnableEnabled_novacustom_nv4x_adl_v1.6.0.rom --set SecureBootEnable --value InvalidValue"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/PowerFailureStatePoweredOff_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set PowerFailureState to Powered Off"
+approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStatePoweredOff_novacustom_nv4x_adl_v1.6.0.rom --set PowerFailureState --value \"Powered Off\""
+
+describe "Get PowerFailureState (expecting Powered Off)"
+  approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStatePoweredOff_novacustom_nv4x_adl_v1.6.0.rom --get PowerFailureState"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/PowerFailureStatePoweredOn_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set PowerFailureState to Powered On"
+approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStatePoweredOn_novacustom_nv4x_adl_v1.6.0.rom --set PowerFailureState --value \"Powered On\""
+
+describe "Get PowerFailureState (expecting Powered On)"
+  approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStatePoweredOn_novacustom_nv4x_adl_v1.6.0.rom --get PowerFailureState"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/PowerFailureStateKeep_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set PowerFailureState to The state at the moment of power failure"
+approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStateKeep_novacustom_nv4x_adl_v1.6.0.rom --set PowerFailureState --value \"The state at the moment of power failure\""
+
+describe "Get PowerFailureState (expecting The state at the moment of power failure)"
+  approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStateKeep_novacustom_nv4x_adl_v1.6.0.rom --get PowerFailureState"
+
+describe "Set PowerFailureState to InvalidMode"
+  approve "$cli variable ${DATA_WORK_DIR}/PowerFailureStateKeep_novacustom_nv4x_adl_v1.6.0.rom --set PowerFailureState --value InvalidMode"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SleepTypeS0ix_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set SleepType to Suspend to Idle (S0ix)"
+approve "$cli variable ${DATA_WORK_DIR}/SleepTypeS0ix_novacustom_nv4x_adl_v1.6.0.rom --set SleepType --value \"Suspend to Idle (S0ix)\""
+
+describe "Get SleepType (expecting Suspend to Idle (S0ix))"
+  approve "$cli variable ${DATA_WORK_DIR}/SleepTypeS0ix_novacustom_nv4x_adl_v1.6.0.rom --get SleepType"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/SleepTypeS3_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set SleepType to Suspend to RAM (S3)"
+approve "$cli variable ${DATA_WORK_DIR}/SleepTypeS3_novacustom_nv4x_adl_v1.6.0.rom --set SleepType --value \"Suspend to RAM (S3)\""
+
+describe "Get SleepType (expecting Suspend to RAM (S3))"
+  approve "$cli variable ${DATA_WORK_DIR}/SleepTypeS3_novacustom_nv4x_adl_v1.6.0.rom --get SleepType"
+
+describe "Set SleepType to InvalidMode"
+  approve "$cli variable ${DATA_WORK_DIR}/SleepTypeS3_novacustom_nv4x_adl_v1.6.0.rom --set SleepType --value InvalidMode"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/CpuThrottlingOffset10_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set CpuThrottlingOffset to 10"
+  approve "$cli variable ${DATA_WORK_DIR}/CpuThrottlingOffset10_novacustom_nv4x_adl_v1.6.0.rom --set CpuThrottlingOffset --value 10"
+
+describe "Get CpuThrottlingOffset (expecting 10)"
+  approve "$cli variable ${DATA_WORK_DIR}/CpuThrottlingOffset10_novacustom_nv4x_adl_v1.6.0.rom --get CpuThrottlingOffset"
+
+cp ${DATA_WORK_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/BatteryConfig4200_novacustom_nv4x_adl_v1.6.0.rom
+describe "Set BatteryConfig to 4200"
+  approve "$cli variable ${DATA_WORK_DIR}/BatteryConfig4200_novacustom_nv4x_adl_v1.6.0.rom --set BatteryConfig --value 4200"
+
+describe "Get BatteryConfig (expecting 4200)"
+  approve "$cli variable ${DATA_WORK_DIR}/BatteryConfig4200_novacustom_nv4x_adl_v1.6.0.rom --get BatteryConfig"
+
 describe "Set valid MAC"
   allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/novacustom_v540tu_mtl_v0.9.0_gbe.rom --set 12:34:56:78:9A:BC"
