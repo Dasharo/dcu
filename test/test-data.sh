@@ -18,7 +18,7 @@ download_test_data() {
   # Supported commands:
   # - logo
   # - smbios (uuid, serial)
-  dl_test_file protectli_vault_cml_v1.2.0-rc1_vp46xx.rom https://cloud.3mdeb.com/index.php/s/KiFEzcLdtA2sA22/download
+  dl_test_file protectli_vp46xx_v1.2.0.rom https://dl.3mdeb.com/open-source-firmware/Dasharo/protectli_vault_cml/v1.2.0/protectli_vp46xx_v1.2.0.rom 
 
   # Supported commands:
   # - logo
