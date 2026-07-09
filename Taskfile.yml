@@ -2,8 +2,8 @@ version: '3'
 
 includes:
   docker:
-    taskfile: https://raw.githubusercontent.com/3mdeb/taskfiles/fe705d9f1438e9da2ed5a6f1622bc1ba6f1d9f8e/docker.yml
-    checksum: e7414f0ebce7fcaab587d1bf5387c4f32bee952bf97de9c30b9075c609608b54
+    taskfile: https://raw.githubusercontent.com/3mdeb/taskfiles/refs/heads/main/docker.yml
+    checksum: 4cc693f1146f1d93a4b3552b267c2f8e35b07ed7235fbeded5c686d61a15c4e6
 
 tasks:
   build:
@@ -15,6 +15,8 @@ tasks:
           VOLUMES: "{{.PWD}}:/app"
           WORKDIR: /app
           COMMAND: bashly generate
+          DOCKER_USER:
+            sh: echo "$(id -u):$(id -g)"
 
   test:
     desc: Run approval tests
@@ -22,7 +24,9 @@ tasks:
     cmds:
       - task: docker:run
         vars:
-          IMAGE: ghcr.io/dasharo/dasharo-sdk:v1.5.0
+          IMAGE: ghcr.io/dasharo/dasharo-sdk:v1.9.2
           VOLUMES: "{{.PWD}}:/dcu"
           WORKDIR: /dcu
           COMMAND: test/approve-ci
+          DOCKER_USER:
+            sh: echo "$(id -u):$(id -g)"
