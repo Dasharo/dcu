@@ -15,7 +15,22 @@ LIST_SUPPORTED="${args[--list-supported]}"
 supported_variables=$(echo "LockBios NetworkBoot UsbDriverStack SmmBwp"\
                     "Ps2Controller BootManagerEnabled PCIeResizeableBarsEnabled"\
                     "EnableCamera EnableWifiBt SerialRedirection SerialRedirection2"\
-                    "MeMode FanCurveOption CpuThrottlingThreshold DGPUEnabled")
+                    "MeMode FanCurveOption CpuThrottlingThreshold"\
+                    "UsbMassStorage QuietBoot FastBoot UsbPortPower DescriptorWriteable"\
+                    "PowerFailureState SleepType CpuThrottlingOffset DGPUState"\
+                    "SecureBootEnable BatteryConfig")
+
+guidof()
+{
+  case $1 in
+    SecureBootEnable)
+      echo "f0a30bc7-af08-4556-99c4001009c93a44"
+      ;;
+    *)
+      echo "dasharo"
+      ;;
+  esac
+}
 
 typeof()
 {
@@ -32,7 +47,12 @@ typeof()
     |EnableCamera \
     |EnableWifiBt \
     |SerialRedirection \
-    |SerialRedirection2)
+    |SerialRedirection2 \
+    |QuietBoot \
+    |FastBoot \
+    |UsbPortPower \
+    |DescriptorWriteable \
+    |SecureBootEnable)
       echo "enum_bool"
       ;;
     MeMode)
@@ -41,11 +61,21 @@ typeof()
     FanCurveOption)
       echo "enum_fancurve"
       ;;
-    CpuThrottlingThreshold)
+    CpuThrottlingThreshold \
+    |CpuThrottlingOffset)
       echo "uint8"
       ;;
-    DGPUEnabled)
+    DGPUState)
       echo "enum_dgpuenabled"
+      ;;
+    PowerFailureState)
+      echo "enum_powerfailure"
+      ;;
+    SleepType)
+      echo "enum_sleeptype"
+      ;;
+    BatteryConfig)
+      echo "uint16"
       ;;
     *)
       echo "unknown"
@@ -57,7 +87,7 @@ valueof()
 {
   case `typeof $1` in
     enum_bool)
-      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t bool)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t bool)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "false" ]; then
         echo "Disabled"
@@ -69,7 +99,7 @@ valueof()
       fi
       ;;
     enum_memode)
-      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "0" ]; then
         echo "Enabled"
@@ -83,7 +113,7 @@ valueof()
       fi
       ;;
     enum_fancurve)
-      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       if [ "${_result}" = "0" ]; then
         echo "Silent"
@@ -95,7 +125,7 @@ valueof()
       fi
       ;;
     enum_dgpuenabled)
-      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       case $_result in
         0) echo "iGPU Only";;
@@ -104,8 +134,32 @@ valueof()
         *) echo "Error!"; exit 18;;
       esac
       ;;
+    enum_powerfailure)
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      case $_result in
+        0) echo "Powered Off";;
+        1) echo "Powered On";;
+        2) echo "The state at the moment of power failure";;
+        *) echo "Error!"; exit 18;;
+      esac
+      ;;
+    enum_sleeptype)
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      case $_result in
+        0) echo "Suspend to Idle (S0ix)";;
+        1) echo "Suspend to RAM (S3)";;
+        *) echo "Error!"; exit 18;;
+      esac
+      ;;
     uint8)
-      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g dasharo -n $1 -t uint8)"
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint8)"
+      error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
+      echo ${_result}
+      ;;
+    uint16)
+      _result="$(${SMMSTORETOOL} "${DASHARO_ROM}" get -g $(guidof $1) -n $1 -t uint16)"
       error_check "Variable store was not initialized yet. You need to set some variable first via --set option." 17
       echo ${_result}
       ;;
@@ -131,8 +185,17 @@ acceptedvaluesfor()
     enum_dgpuenabled)
       echo "iGPU Only / NVIDIA Optimus / dGPU Only"
       ;;
+    enum_powerfailure)
+      echo "Powered Off / Powered On / The state at the moment of power failure"
+      ;;
+    enum_sleeptype)
+      echo "Suspend to Idle (S0ix) / Suspend to RAM (S3)"
+      ;;
     uint8)
       echo "0-255 (Actual supported values may vary)"
+      ;;
+    uint16)
+      echo "0-65535 (Actual supported values may vary)"
       ;;
     *)
       ;;
@@ -188,14 +251,14 @@ set_variable()
     set_type=$(typeof ${SET})
   fi
 
-  ${SMMSTORETOOL} "${DASHARO_ROM}" set -g dasharo -n ${SET} -t ${set_type} -v ${set_value}
+  ${SMMSTORETOOL} "${DASHARO_ROM}" set -g $(guidof ${SET}) -n ${SET} -t ${set_type} -v ${set_value}
   echo "Successfully set variable ${SET} in the variable store."
 }
 
 list_variables()
 {
   echo "Settings in ${DASHARO_ROM}:"
-  variables=$(${SMMSTORETOOL} "${DASHARO_ROM}" list | grep "dasharo" | sed 's/.*://; s/(.*//')
+  variables=$(${SMMSTORETOOL} "${DASHARO_ROM}" list | grep -E "dasharo|f0a30bc7-af08-4556" | sed 's/.*://; s/(.*//')
   tabs 30
   echo -e "NAME\tVALUE\tACCEPTED VALUES"
   for var in $variables; do
@@ -204,7 +267,10 @@ list_variables()
       |enum_memode \
       |enum_fancurve \
       |enum_dgpuenabled \
-      |uint8)
+      |enum_powerfailure \
+      |enum_sleeptype \
+      |uint8 \
+      |uint16)
         echo -e "$var\t$(valueof $var)\t$(acceptedvaluesfor $var)"
         ;;
       *)
