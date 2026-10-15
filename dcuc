@@ -38,6 +38,11 @@ for ARG in "$@"; do
     fi
 done
 
+# Pass stdin through when interactive, so that commands can prompt for input
+if [[ -t 0 ]]; then
+    DOCKER_ARGS+=("-i")
+fi
+
 if [[ -v CI ]]; then
     "${SCRIPT_DIR}/dcu" "${COMMAND_ARGS[@]}"
 else

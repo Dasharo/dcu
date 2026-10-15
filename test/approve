@@ -152,3 +152,43 @@ describe "Set MAC Bad checksums"
 describe "MAC Unsupported binary"
   allow_diff $ESCAPED_PWD
   approve "$cli mac ${DATA_WORK_DIR}/protectli_vp46xx_v1.2.0.rom"
+
+cp ${DATA_DL_DIR}/novacustom_nv4x_adl_v1.6.0.rom ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom
+describe "Get password status from uninitialized store"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom" "password_status_not_set"
+
+describe "Check password when none is set"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --check --value TigerLion1" "password_check_not_set"
+
+describe "Set too short password"
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --set --value Tiger1"
+
+describe "Set password with non-ASCII characters"
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --set --value TigerLion€"
+
+describe "Set password"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --set --value TigerLion1"
+
+describe "Get password status (expecting set)"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom" "password_status_set"
+
+describe "Check correct password"
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --check --value TigerLion1" "password_check_correct"
+
+describe "Check wrong password"
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --check --value TigerLion2"
+
+describe "Use conflicting password flags"
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --set --check --value TigerLion1"
+
+describe "Clear password"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom --clear"
+
+describe "Get password status (expecting not set after clear)"
+  allow_diff $ESCAPED_PWD
+  approve "$cli password ${DATA_WORK_DIR}/Password_novacustom_nv4x_adl_v1.6.0.rom" "password_status_cleared"

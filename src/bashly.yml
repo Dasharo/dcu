@@ -81,6 +81,32 @@ commands:
     examples:
       - dcu variable coreboot.rom --get EnableWifiBt
       - dcu variable coreboot.rom --set EnableWifiBt --value Disabled
+  - name: password
+    alias: p
+    help: Set, check or clear the setup password in a firmware image
+    args:
+      - name: dasharo_rom_file
+        required: true
+        help: Dasharo firmware file (e.g. coreboot.rom)
+    flags:
+      - long: --set
+        help: Set a new setup password (prompted for, 8 to 64 printable ASCII characters)
+      - long: --check
+        help: Check whether a password matches the one set in the firmware image
+      - long: --clear
+        help: Remove the setup password from the firmware image
+      - long: --value
+        arg: password
+        help: Password to use with --set or --check instead of prompting (may end up in shell history)
+    dependencies:
+      openssl:
+        command: [openssl]
+        help: "Please install openssl package (version 3.0 or newer)"
+    examples:
+      - dcu password coreboot.rom
+      - dcu password coreboot.rom --set
+      - dcu password coreboot.rom --check
+      - dcu password coreboot.rom --clear
 
 dependencies:
   cbfstool:
@@ -110,3 +136,4 @@ examples:
   - dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   - dcu logo coreboot.rom -l bootsplash.bmp
   - dcu variable coreboot.rom --get EnableWifiBt
+  - dcu password coreboot.rom --set

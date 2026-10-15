@@ -22,6 +22,7 @@ Following packages must be installed:
 * `imagemagick` (for `convert` command)
 * `util-linux` (for `uuidparse` command)
 * [coreboot's cbfstool](https://github.com/coreboot/coreboot/tree/master/util/cbfstool)
+* `openssl` version 3.0 or newer (for the `password` command)
 
 The script will exit with an error if any of above are not present.
 
@@ -179,6 +180,31 @@ CpuThrottlingThreshold		0-255 (Actual supported values may vary)
 ./dcu mac coreboot.rom --set "00:11:22:33:44:55"
 ```
 
+* Set the setup password (prompts for it twice, without echoing):
+
+```bash
+./dcu password coreboot.rom --set
+```
+
+* Check whether the setup password is set, or whether a password matches it:
+
+```bash
+./dcu password coreboot.rom
+./dcu password coreboot.rom --check
+```
+
+* Remove the setup password:
+
+```bash
+./dcu password coreboot.rom --clear
+```
+
+> Note: The password must be 8 to 64 printable ASCII characters long. The
+> firmware reads it using the US keyboard layout. The password can also be
+> passed with `--value` for scripting, but it may then end up in the shell
+> history. The firmware ignores the password on platforms that do not support
+> setting a setup password.
+
 Changing logo on a fused platform requires adding more arguments to flashrom commands: 
 - when obtaining the binary to be modifed, read only bios region
 ```
@@ -218,6 +244,8 @@ Changing logo on a fused platform requires adding more arguments to flashrom com
 * 21 - provided image is not supported by `mac` subcommand
 * 22 - invalid MAC address format
 * 23 - MAC addresses in the image are invalid
+* 24 - password does not match the one set in the image
+* 25 - tried to check a password, but no password is set in the image
 
 ## Development
 
