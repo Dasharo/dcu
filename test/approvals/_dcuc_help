@@ -10,6 +10,7 @@ Commands:
   smbios     Edit SMBIOS data in a firmware image
   logo       Insert custom logo boot splash into firmware image
   variable   Edit Dasharo configuration variables
+  password   Set, check or clear the setup password in a firmware image
 
 Options:
   --help, -h
@@ -23,3 +24,4 @@ Examples:
   dcu smbios coreboot.rom -u 96bcfa1a-42b4-6717-a44c-d8bbc18cbea4 -s D07229051
   dcu logo coreboot.rom -l bootsplash.bmp
   dcu variable coreboot.rom --get EnableWifiBt
+  dcu password coreboot.rom --set
