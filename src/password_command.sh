@@ -32,19 +32,12 @@ fi
 TMP_DIR="$(mktemp -d)"
 trap 'rm -rf "${TMP_DIR}"' EXIT
 
-to_hex()
-{
-  od -An -v -tx1 | tr -d ' \n'
-}
-
 # Prints the 32-byte PBKDF2 key for password $1 and the salt in file $2.
 # The firmware hashes the ASCII password including its NUL terminator.
 password_hash()
 {
-  openssl kdf -binary -keylen 32 -kdfopt digest:SHA256 \
-    -kdfopt "hexpass:$(printf '%s' "$1" | to_hex)00" \
-    -kdfopt "hexsalt:$(to_hex < "$2")" \
-    -kdfopt "iter:${PBKDF2_ITERATIONS}" PBKDF2
+  # Keep the password out of child process argv; it is piped to python on stdin.
+  printf '%s' "$1" | python3 -c 'import hashlib,sys; password=sys.stdin.buffer.read()+b"\x00"; salt=open(sys.argv[1],"rb").read(); sys.stdout.buffer.write(hashlib.pbkdf2_hmac("sha256",password,salt,int(sys.argv[2]),32))' "$2" "${PBKDF2_ITERATIONS}"
 }
 
 validate_password()

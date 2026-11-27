@@ -102,6 +102,9 @@ commands:
       openssl:
         command: [openssl]
         help: "Please install openssl package (version 3.0 or newer)"
+      python3:
+        command: [python3]
+        help: "Please install python3 package"
     examples:
       - dcu password coreboot.rom
       - dcu password coreboot.rom --set
