@@ -869,19 +869,12 @@ dcu_password_command() {
   TMP_DIR="$(mktemp -d)"
   trap 'rm -rf "${TMP_DIR}"' EXIT
 
-  to_hex()
-  {
-    od -An -v -tx1 | tr -d ' \n'
-  }
-
   # Prints the 32-byte PBKDF2 key for password $1 and the salt in file $2.
   # The firmware hashes the ASCII password including its NUL terminator.
   password_hash()
   {
-    openssl kdf -binary -keylen 32 -kdfopt digest:SHA256 \
-      -kdfopt "hexpass:$(printf '%s' "$1" | to_hex)00" \
-      -kdfopt "hexsalt:$(to_hex < "$2")" \
-      -kdfopt "iter:${PBKDF2_ITERATIONS}" PBKDF2
+    # Keep the password out of child process argv; it is piped to python on stdin.
+    printf '%s' "$1" | python3 -c 'import hashlib,sys; password=sys.stdin.buffer.read()+b"\x00"; salt=open(sys.argv[1],"rb").read(); sys.stdout.buffer.write(hashlib.pbkdf2_hmac("sha256",password,salt,int(sys.argv[2]),32))' "$2" "${PBKDF2_ITERATIONS}"
   }
 
   validate_password()
@@ -1523,6 +1516,13 @@ dcu_password_parse_requirements() {
   else
     printf "missing dependency: openssl\n" >&2
     printf "%s\n" "Please install openssl package (version 3.0 or newer)" >&2
+    exit 1
+  fi
+  if command -v python3 >/dev/null 2>&1; then
+    deps['python3']="$(command -v python3 | head -n1)"
+  else
+    printf "missing dependency: python3\n" >&2
+    printf "%s\n" "Please install python3 package" >&2
     exit 1
   fi
 

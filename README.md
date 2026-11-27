@@ -23,6 +23,7 @@ Following packages must be installed:
 * `util-linux` (for `uuidparse` command)
 * [coreboot's cbfstool](https://github.com/coreboot/coreboot/tree/master/util/cbfstool)
 * `openssl` version 3.0 or newer (for the `password` command)
+* `python3` (for the `password` command)
 
 The script will exit with an error if any of above are not present.
 
